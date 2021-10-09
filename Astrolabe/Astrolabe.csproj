@@ -120,7 +120,16 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Navigating\Abstraction\INavigationOptions.cs" />
+    <Compile Include="Navigating\Abstraction\INavigationServices.cs" />
+    <Compile Include="Navigating\Abstraction\INavigationStack.cs" />
+    <Compile Include="Navigating\Options\NavigationOptions.cs" />
+    <Compile Include="ViewModels\INavigationArgs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Routing\Abstraction\IRoute.cs" />
+    <Compile Include="Routing\Abstraction\IRouter.cs" />
+    <Compile Include="Routing\Abstraction\IRoutingResult.cs" />
+    <Compile Include="ViewModels\INavigatable.cs" />
     <EmbeddedResource Include="Properties\Astrolabe.rd.xml" />
   </ItemGroup>
   <ItemGroup>
@@ -128,7 +137,9 @@
       <Version>6.2.12</Version>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Exceptions\" />
+  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>
