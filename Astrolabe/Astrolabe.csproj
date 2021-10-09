@@ -135,6 +135,8 @@
     <Compile Include="Navigating\Abstraction\INavigationStack.cs" />
     <Compile Include="Navigating\NavigationStack.cs" />
     <Compile Include="Navigating\Options\NavigationOptions.cs" />
+    <Compile Include="Pages\Abstractions\INavigateContext.cs" />
+    <Compile Include="Pages\NavigateContext.cs" />
     <Compile Include="ViewModels\INavigationArgs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Routing\Abstraction\IRoute.cs" />

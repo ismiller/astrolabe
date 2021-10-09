@@ -1,11 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Astrolabe.Navigating.Abstraction;
-using Astrolabe.Routing.Abstraction;
 
 namespace Astrolabe.Navigating
 {
+    /// <summary>
+    /// Предоставляет функционал стека навигации.
+    /// </summary>
+    /// <typeparam name="TElement"></typeparam>
     public class NavigationStack<TElement> : INavigationStack<TElement>
     {
         #region Private Fields
