@@ -18,12 +18,6 @@
         void Clear();
 
         /// <summary>
-        /// Возвращает, но не удаляет, верхний элемент из стека.
-        /// </summary>
-        /// <returns>Элемент стека типа <typeparamref name="TElement"/>.</returns>
-        TElement Peek();
-
-        /// <summary>
         /// Добавляет элемент в стек.
         /// </summary>
         /// <param name="element">Добавляемый элемент типа <typeparamref name="TElement"/>.</param>
