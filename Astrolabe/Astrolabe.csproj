@@ -137,6 +137,11 @@
     <Compile Include="Navigating\Options\NavigationOptions.cs" />
     <Compile Include="Pages\Abstractions\INavigateContext.cs" />
     <Compile Include="Pages\NavigateContext.cs" />
+    <Compile Include="Routing\Abstraction\IRouteDictionary.cs" />
+    <Compile Include="Routing\Route.cs" />
+    <Compile Include="Routing\RouteDictionary.cs" />
+    <Compile Include="Routing\Router.cs" />
+    <Compile Include="Routing\RoutingResult.cs" />
     <Compile Include="ViewModels\INavigationArgs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Routing\Abstraction\IRoute.cs" />
@@ -146,6 +151,9 @@
     <EmbeddedResource Include="Properties\Astrolabe.rd.xml" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection">
+      <Version>5.0.2</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.12</Version>
     </PackageReference>

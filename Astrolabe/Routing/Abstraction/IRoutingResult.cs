@@ -1,4 +1,6 @@
-﻿namespace Astrolabe.Routing.Abstraction
+﻿using Astrolabe.ViewModels;
+
+namespace Astrolabe.Routing.Abstraction
 {
     /// <summary>
     /// Предоставляет результат выполнения маршрута.
@@ -11,11 +13,6 @@
         bool IsSuccess { get; }
 
         /// <summary>
-        /// Предоставляет флаг, указывающий на неудачное выполнение маршрута.
-        /// </summary>
-        bool IsFailure { get; }
-
-        /// <summary>
         /// Предоставляет сообщение результата выполнения маршрута.
         /// </summary>
         string Message { get; }
@@ -23,6 +20,7 @@
         /// <summary>
         /// Применяет переданные аргументы навигации.
         /// </summary>
-        void ApplyNavigateArgs();
+        /// <param name="args">Устанавливаемые аргументы навигации.</param>
+        void ApplyNavigateArgs(INavigationArgs args);
     }
 }
