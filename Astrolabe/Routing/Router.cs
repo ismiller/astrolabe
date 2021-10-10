@@ -27,22 +27,16 @@ namespace Astrolabe.Routing
 
         #region Public Methods
 
-        public IRoute GetRequiredRoute<TNavigatable>() where TNavigatable : INavigatable
+        public IBuildRouteResult GetRequiredRoute<TNavigatable>() where TNavigatable : INavigatable
         {
             if (_routeDictionary.TryGetValue<TNavigatable>(out Type viewType))
             {
-                //TODO: здесь можно отловить ошибку и обернуть в более спецефичную
                 TNavigatable viewModel = _provider.GetRequiredService<TNavigatable>();
-                return new Route(viewModel, viewType);
+                IRoute route = new Route(viewModel, viewType);
+                return BuildRouteResult.Succeeded(route);
             }
 
-            //TODO: здесь можно отловить ошибку и обернуть в более спецефичную
-            throw new KeyNotFoundException("Route not found");
-        }
-
-        public void RegisterRoute<TViewModel, TView>(bool isViewCashed = false)
-        {
-            throw new NotImplementedException();
+            return BuildRouteResult.Failed("Route not found");
         }
 
         #endregion Public Methods

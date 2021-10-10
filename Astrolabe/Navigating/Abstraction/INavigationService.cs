@@ -6,7 +6,7 @@ namespace Astrolabe.Navigating.Abstraction
     /// <summary>
     /// Описывает функционал управления навигацией.
     /// </summary>
-    public interface INavigationServices
+    public interface INavigationService
     {
         /// <summary>
         /// Событие, инициируемое после завершения навигации.
