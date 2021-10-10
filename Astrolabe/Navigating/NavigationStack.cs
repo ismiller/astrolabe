@@ -14,7 +14,7 @@ namespace Astrolabe.Navigating
 
         private readonly Stack<TElement> _stack;
 
-        private TElement _selectedElement;
+        private TElement _suspendElement;
 
         #endregion Private Fields
 
@@ -26,7 +26,7 @@ namespace Astrolabe.Navigating
         public NavigationStack()
         {
             _stack = new Stack<TElement>();
-            _selectedElement = default;
+            _suspendElement = default;
         }
 
         #endregion Public Constructors
@@ -43,18 +43,31 @@ namespace Astrolabe.Navigating
         public void Clear()
         {
             _stack.Clear();
-            _selectedElement = default;
+            _suspendElement = default;
+        }
+
+        /// <inheritdoc />
+        public bool TryGetSuspend(out TElement element)
+        {
+            element = default;
+            if (_suspendElement is not null)
+            {
+                element = _suspendElement;
+                return true;
+            }
+
+            return false;
         }
 
         /// <inheritdoc />
         public void Push(TElement element)
         {
-            if (_selectedElement is not null)
+            if (_suspendElement is not null)
             {
-                _stack.Push(_selectedElement);
+                _stack.Push(_suspendElement);
             }
 
-            _selectedElement = element;
+            _suspendElement = element;
         }
 
         /// <inheritdoc />
@@ -62,7 +75,7 @@ namespace Astrolabe.Navigating
         {
             while (_stack.Any())
             {
-                _selectedElement = _stack.Pop();
+                _suspendElement = _stack.Pop();
             }
         }
 
@@ -71,12 +84,12 @@ namespace Astrolabe.Navigating
         {
             if (!Any())
             {
-                element = _selectedElement;
+                element = _suspendElement;
                 return false;
             }
 
-            _selectedElement = _stack.Pop();
-            element = _selectedElement;
+            _suspendElement = _stack.Pop();
+            element = _suspendElement;
             return true;
         }
 

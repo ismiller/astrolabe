@@ -18,6 +18,13 @@
         void Clear();
 
         /// <summary>
+        /// Пробует извлечь подвешенный элемент, который ещё не был добавлен в стек.
+        /// </summary>
+        /// <param name="element">Извлеченный элемент.</param>
+        /// <returns><see langword="true"/> - если операция выполнена успешно.</returns>
+        bool TryGetSuspend(out TElement element);
+
+        /// <summary>
         /// Добавляет элемент в стек.
         /// </summary>
         /// <param name="element">Добавляемый элемент типа <typeparamref name="TElement"/>.</param>
