@@ -24,6 +24,6 @@ namespace Astrolabe.Navigating.Abstraction
         /// <summary>
         /// Предоставляет или устанавливает флаг, указвающий на необходимость игнорирования текущей навигации.
         /// </summary>
-        bool IsIgnoreCurrentNavigate { get; set; }
+        bool IsIgnoreStack { get; set; }
     }
 }

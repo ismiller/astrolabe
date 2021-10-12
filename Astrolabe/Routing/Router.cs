@@ -11,15 +11,15 @@ namespace Astrolabe.Routing
         #region Private Fields
 
         private readonly IServiceProvider _provider;
-        private readonly IRouteDictionary _routeDictionary;
+        private readonly IRouteSchemeDictionary _routeSchemeDictionary;
 
         #endregion Private Fields
 
         #region Public Constructors
 
-        public Router(IRouteDictionary routeDictionary, IServiceProvider provider)
+        public Router(IRouteSchemeDictionary routeSchemeDictionary, IServiceProvider provider)
         {
-            _routeDictionary = routeDictionary ?? throw new ArgumentNullException(nameof(routeDictionary));
+            _routeSchemeDictionary = routeSchemeDictionary ?? throw new ArgumentNullException(nameof(routeSchemeDictionary));
             _provider = provider ?? throw new ArgumentNullException(nameof(provider));
         }
 
@@ -29,11 +29,15 @@ namespace Astrolabe.Routing
 
         public IBuildRouteResult GetRequiredRoute<TNavigatable>() where TNavigatable : INavigatable
         {
-            if (_routeDictionary.TryGetValue<TNavigatable>(out Type viewType))
+            if (_routeSchemeDictionary.TryGetScheme<TNavigatable>(out IRouteScheme scheme))
             {
-                TNavigatable viewModel = _provider.GetRequiredService<TNavigatable>();
-                IRoute route = new Route(viewModel, viewType);
-                return BuildRouteResult.Succeeded(route);
+                object viewModel = _provider.GetRequiredService(scheme.ViewModelType);
+
+                if (viewModel is TNavigatable concreteViewModel)
+                {
+                    IRoute route = new Route(concreteViewModel, scheme.ViewModelType);
+                    return BuildRouteResult.Succeeded(route);
+                }
             }
 
             return BuildRouteResult.Failed("Route not found");

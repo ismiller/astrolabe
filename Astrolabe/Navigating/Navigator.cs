@@ -37,20 +37,10 @@ namespace Astrolabe.Navigating
                     {
                         lastRoute?.Reset();
                         result.ApplyNavigateArgs(navigationArgs);
+
+                        ApplyNavigateOptions(route, options);
+
                         Navigated?.Invoke(this, EventArgs.Empty);
-
-                        if (options is not null)
-                        {
-                            if (options.IsResetStack)
-                            {
-                                _navigationStack.Reset();
-                            }
-
-                            if (options.IsClearStack)
-                            {
-                                _navigationStack.Clear();
-                            }
-                        }
                     }
                 }
             }
@@ -85,23 +75,10 @@ namespace Astrolabe.Navigating
                 IRoutingResult routingResult = buildRoute.Route.TryExecute(_context);
                 if (routingResult.IsSuccess)
                 {
-                    _navigationStack.Push(buildRoute.Route);
                     lastRoute.Reset();
                     routingResult.ApplyNavigateArgs(navigationArgs);
+                    ApplyNavigateOptions(buildRoute.Route, options);
                     Navigated?.Invoke(this, EventArgs.Empty);
-
-                    if (options is not null)
-                    {
-                        if (options.IsResetStack)
-                        {
-                            _navigationStack.Reset();
-                        }
-
-                        if (options.IsClearStack)
-                        {
-                            _navigationStack.Clear();
-                        }
-                    }
                 }
             }
         }
@@ -119,6 +96,27 @@ namespace Astrolabe.Navigating
                     lastRoute.Reset();
                     routingResult.ApplyNavigateArgs(navigationArgs);
                     Navigated?.Invoke(this, EventArgs.Empty);
+                }
+            }
+        }
+
+        private void ApplyNavigateOptions(IRoute currentRoute, INavigationOptions options)
+        {
+            if (options is not null)
+            {
+                if (!options.IsIgnoreStack)
+                {
+                    _navigationStack.Push(currentRoute);
+                }
+
+                if (options.IsResetStack)
+                {
+                    _navigationStack.Reset();
+                }
+
+                if (options.IsClearStack)
+                {
+                    _navigationStack.Clear();
                 }
             }
         }

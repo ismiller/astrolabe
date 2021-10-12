@@ -138,12 +138,14 @@
     <Compile Include="Navigating\Options\NavigationOptions.cs" />
     <Compile Include="Pages\Abstractions\INavigateContext.cs" />
     <Compile Include="Pages\NavigateContext.cs" />
-    <Compile Include="Routing\Abstraction\IRouteDictionary.cs" />
+    <Compile Include="Routing\Abstraction\IRouteSchemeDictionary.cs" />
     <Compile Include="Routing\Abstraction\IBuildRouteResult.cs" />
+    <Compile Include="Routing\Abstraction\IRouteScheme.cs" />
     <Compile Include="Routing\BuildRouteResult.cs" />
     <Compile Include="Routing\Route.cs" />
-    <Compile Include="Routing\RouteDictionary.cs" />
+    <Compile Include="Routing\RouteSchemeDictionary.cs" />
     <Compile Include="Routing\Router.cs" />
+    <Compile Include="Routing\RouteScheme.cs" />
     <Compile Include="Routing\RoutingResult.cs" />
     <Compile Include="ViewModels\INavigationArgs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

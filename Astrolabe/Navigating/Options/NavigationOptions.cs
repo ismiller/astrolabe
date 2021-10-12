@@ -14,6 +14,6 @@ namespace Astrolabe.Navigating.Options
         public bool IsResetStack { get; set; }
 
         /// <inheritdoc />
-        public bool IsIgnoreCurrentNavigate { get; set; }
+        public bool IsIgnoreStack { get; set; }
     }
 }

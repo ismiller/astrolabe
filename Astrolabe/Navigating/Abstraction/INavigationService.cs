@@ -38,13 +38,13 @@ namespace Astrolabe.Navigating.Abstraction
         /// <typeparam name="TViewModel">Тип модели представления на страницу которой производится навигация.</typeparam>
         /// <param name="navigationArgs">Аргументы навигации.</param>
         /// <param name="options">Опции навигации.</param>
-        void NavigateTo<TViewModel>(INavigationArgs navigationArgs, INavigationOptions options);
+        void NavigateTo<TViewModel>(INavigationArgs navigationArgs, INavigationOptions options) where TViewModel : INavigatable;
 
         /// <summary>
         /// Выполняет навигацию на указанную страницу.
         /// </summary>
         /// <typeparam name="TViewModel">Тип модели представления на страницу которой производится навигация.</typeparam>
         /// <param name="navigationArgs">Аргументы навигации.</param>
-        void NavigateTo<TViewModel>(INavigationArgs navigationArgs);
+        void NavigateTo<TViewModel>(INavigationArgs navigationArgs) where TViewModel : INavigatable;
     }
 }

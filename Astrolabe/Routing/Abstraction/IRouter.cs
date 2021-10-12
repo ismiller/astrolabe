@@ -10,7 +10,7 @@ namespace Astrolabe.Routing.Abstraction
         /// <summary>
         /// Предоставляет маршрут навигации для требуемой модели представления.
         /// </summary>
-        /// <typeparam name="TViewModel">Тип модели представления.</typeparam>
+        /// <typeparam name="TNavigatable">Тип модели представления.</typeparam>
         /// <returns>Объект маршрута - <see cref="IRoute"/>.</returns>
         IBuildRouteResult GetRequiredRoute<TNavigatable>() where TNavigatable : INavigatable;
     }
