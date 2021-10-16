@@ -1,7 +1,9 @@
 ﻿using System;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
 using Astrolabe.Pages.Abstractions;
+using Astrolabe.ViewModels;
 
 namespace Astrolabe.Pages
 {
@@ -29,6 +31,8 @@ namespace Astrolabe.Pages
         {
             _frame = frame ?? throw new ArgumentNullException(nameof(frame));
             _navigationOptions = navigationOptions ?? throw new ArgumentNullException(nameof(navigationOptions));
+            _navigationOptions.IsNavigationStackEnabled = false;
+            _navigationOptions.TransitionInfoOverride = new SuppressNavigationTransitionInfo();
         }
 
         #endregion Public Constructors
@@ -36,16 +40,9 @@ namespace Astrolabe.Pages
         #region Public Methods
 
         /// <inheritdoc />
-        public bool TryAccept(Type viewType, object dataContext)
+        public bool TryAccept(Type viewType, IViewModelContainer container)
         {
-            bool result = _frame.NavigateToType(viewType, default, _navigationOptions);
-            if (result)
-            {
-                Page page = _frame.Content as Page;
-                page.DataContext = dataContext;
-            }
-
-            return result;
+            return _frame.NavigateToType(viewType, container, _navigationOptions);
         }
 
         #endregion Public Methods

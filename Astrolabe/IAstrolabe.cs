@@ -1,12 +1,14 @@
 ﻿using System;
+using Astrolabe.Navigating.Abstraction;
+using Astrolabe.Routing.Abstraction;
 using Astrolabe.ViewModels;
 
-namespace Astrolabe.Navigating.Abstraction
+namespace Astrolabe
 {
     /// <summary>
     /// Описывает функционал управления навигацией.
     /// </summary>
-    public interface INavigationService
+    public interface IAstrolabe
     {
         /// <summary>
         /// Событие, инициируемое после завершения навигации.
@@ -46,5 +48,11 @@ namespace Astrolabe.Navigating.Abstraction
         /// <typeparam name="TViewModel">Тип модели представления на страницу которой производится навигация.</typeparam>
         /// <param name="navigationArgs">Аргументы навигации.</param>
         void NavigateTo<TViewModel>(INavigationArgs navigationArgs) where TViewModel : INavigatable;
+
+        /// <summary>
+        /// Выполняет установку маршрутизатора.
+        /// </summary>
+        /// <param name="router">Экземпляр маршрутизатора.</param>
+        void SetRouter(IRouter router);
     }
 }

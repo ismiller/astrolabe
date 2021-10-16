@@ -1,28 +1,51 @@
 ﻿using System;
+using Astrolabe.Navigating;
 using Astrolabe.Navigating.Abstraction;
 using Astrolabe.Pages.Abstractions;
 using Astrolabe.Routing.Abstraction;
 using Astrolabe.ViewModels;
 
-namespace Astrolabe.Navigating
+namespace Astrolabe
 {
-    public class Navigator : INavigationService
+    /// <summary>
+    /// Предоставляет функционал управления навигацией.
+    /// </summary>
+    public class AstrolabeNavigator : IAstrolabe
     {
-        public event EventHandler Navigated;
-
-        private readonly INavigationStack<IRoute> _navigationStack;
+        #region Private Fields
 
         private readonly INavigateContext _context;
 
-        private readonly IRouter _router;
+        private readonly INavigationStack<IRoute> _navigationStack;
 
-        public Navigator(IRouter router, INavigateContext context)
+        private IRouter _router;
+
+        #endregion Private Fields
+
+        #region Public Events
+
+        /// <inheritdoc />
+        public event EventHandler Navigated;
+
+        #endregion Public Events
+
+        #region Public Constructors
+
+        /// <summary>
+        /// Создает экземпляр <see cref="AstrolabeNavigator"/>.
+        /// </summary>
+        /// <param name="context">Контекст навигации.</param>
+        public AstrolabeNavigator(INavigateContext context)
         {
-            _router = router ?? throw new ArgumentNullException(nameof(router));
             _context = context ?? throw new ArgumentNullException(nameof(context));
             _navigationStack = new NavigationStack<IRoute>();
         }
 
+        #endregion Public Constructors
+
+        #region Public Methods
+
+        /// <inheritdoc />
         public void NavigateBack(INavigationArgs navigationArgs, INavigationOptions options)
         {
             if (_navigationStack.Any())
@@ -35,7 +58,6 @@ namespace Astrolabe.Navigating
 
                     if (result.IsSuccess)
                     {
-                        lastRoute?.Reset();
                         result.ApplyNavigateArgs(navigationArgs);
 
                         ApplyNavigateOptions(route, options);
@@ -46,19 +68,17 @@ namespace Astrolabe.Navigating
             }
         }
 
+        /// <inheritdoc />
         public void NavigateBack(INavigationArgs navigationArgs)
         {
             if (_navigationStack.Any())
             {
-                _ = _navigationStack.TryGetSuspend(out IRoute lastRoute);
-
                 if (_navigationStack.TryPop(out IRoute route))
                 {
                     IRoutingResult result = route.TryExecute(_context);
 
                     if (result.IsSuccess)
                     {
-                        lastRoute?.Reset();
                         result.ApplyNavigateArgs(navigationArgs);
                         Navigated?.Invoke(this, EventArgs.Empty);
                     }
@@ -66,16 +86,15 @@ namespace Astrolabe.Navigating
             }
         }
 
+        /// <inheritdoc />
         public void NavigateTo<TViewModel>(INavigationArgs navigationArgs, INavigationOptions options) where TViewModel : INavigatable
         {
             IBuildRouteResult buildRoute = _router.GetRequiredRoute<TViewModel>();
             if (buildRoute.IsSuccess)
             {
-                _ = _navigationStack.TryGetSuspend(out IRoute lastRoute);
                 IRoutingResult routingResult = buildRoute.Route.TryExecute(_context);
                 if (routingResult.IsSuccess)
                 {
-                    lastRoute.Reset();
                     routingResult.ApplyNavigateArgs(navigationArgs);
                     ApplyNavigateOptions(buildRoute.Route, options);
                     Navigated?.Invoke(this, EventArgs.Empty);
@@ -83,22 +102,32 @@ namespace Astrolabe.Navigating
             }
         }
 
+        /// <inheritdoc />
         public void NavigateTo<TViewModel>(INavigationArgs navigationArgs) where TViewModel : INavigatable
         {
             IBuildRouteResult buildRoute = _router.GetRequiredRoute<TViewModel>();
             if (buildRoute.IsSuccess)
             {
-                _ = _navigationStack.TryGetSuspend(out IRoute lastRoute);
                 IRoutingResult routingResult = buildRoute.Route.TryExecute(_context);
                 if (routingResult.IsSuccess)
                 {
                     _navigationStack.Push(buildRoute.Route);
-                    lastRoute.Reset();
                     routingResult.ApplyNavigateArgs(navigationArgs);
                     Navigated?.Invoke(this, EventArgs.Empty);
                 }
             }
         }
+
+        /// <inheritdoc />
+        ///TODO: временный метод, пока не будет реализован билдер для сервиса навигации.
+        public void SetRouter(IRouter router)
+        {
+            _router = router ?? throw new ArgumentNullException(nameof(router));
+        }
+
+        #endregion Public Methods
+
+        #region Private Methods
 
         private void ApplyNavigateOptions(IRoute currentRoute, INavigationOptions options)
         {
@@ -120,5 +149,7 @@ namespace Astrolabe.Navigating
                 }
             }
         }
+
+        #endregion Private Methods
     }
 }

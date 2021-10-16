@@ -1,4 +1,6 @@
 ﻿using System;
+using Windows.UI.Xaml.Controls;
+using Astrolabe.Pages;
 using Astrolabe.ViewModels;
 
 namespace Astrolabe.Routing.Abstraction
@@ -23,6 +25,6 @@ namespace Astrolabe.Routing.Abstraction
         /// <typeparam name="TView">Тип представления.</typeparam>
         void RegisterScheme<TNavigatable, TView>()
             where TNavigatable : INavigatable
-            where TView : class, new();
+            where TView : AstrolabePage, new();
     }
 }

@@ -64,7 +64,7 @@ namespace Astrolabe.Routing
         /// <inheritdoc />
         public void ApplyNavigateArgs(INavigationArgs args)
         {
-            _navigatable?.Accept(args);
+            _navigatable?.Prepare(args);
         }
 
         #endregion Public Methods

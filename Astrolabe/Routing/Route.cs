@@ -9,7 +9,7 @@ namespace Astrolabe.Routing
     {
         #region Private Fields
 
-        private readonly INavigatable _navigatableViewModel;
+        private readonly IViewModelContainer _viewModelContainer;
 
         private readonly Type _viewType;
 
@@ -20,12 +20,12 @@ namespace Astrolabe.Routing
         /// <summary>
         /// Создает экземпляр <see cref="Route"/>.
         /// </summary>
-        /// <param name="navigatableViewModel">Навигируемый объект.</param>
+        /// <param name="viewModel">Навигируемый объект.</param>
         /// <param name="viewType">Тип представления.</param>
-        public Route(INavigatable navigatableViewModel, Type viewType)
+        public Route(INavigatable viewModel, Type viewType)
         {
             _viewType = viewType;
-            _navigatableViewModel = navigatableViewModel;
+            _viewModelContainer = new ViewModelContainer(viewModel);
         }
 
         #endregion Public Constructors
@@ -33,18 +33,12 @@ namespace Astrolabe.Routing
         #region Public Methods
 
         /// <inheritdoc />
-        public void Reset()
-        {
-            _navigatableViewModel?.Leave();
-        }
-
-        /// <inheritdoc />
         public IRoutingResult TryExecute(INavigateContext context)
         {
-            bool result = context.TryAccept(_viewType, _navigatableViewModel);
+            bool result = context.TryAccept(_viewType, _viewModelContainer);
             if (result)
             {
-                return RoutingResult.Succeeded(_navigatableViewModel);
+                return RoutingResult.Succeeded(_viewModelContainer.ViewModel);
             }
             else
             {

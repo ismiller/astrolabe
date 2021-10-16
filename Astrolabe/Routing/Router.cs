@@ -35,7 +35,7 @@ namespace Astrolabe.Routing
 
                 if (viewModel is TNavigatable concreteViewModel)
                 {
-                    IRoute route = new Route(concreteViewModel, scheme.ViewModelType);
+                    IRoute route = new Route(concreteViewModel, scheme.ViewType);
                     return BuildRouteResult.Succeeded(route);
                 }
             }

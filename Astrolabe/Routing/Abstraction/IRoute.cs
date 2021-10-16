@@ -13,10 +13,5 @@ namespace Astrolabe.Routing.Abstraction
         /// <param name="context">Контекст навигации.</param>
         /// <returns>Возвращает объект <see cref="IRoutingResult"/> предоставляющий результат выполнения маршрута.</returns>
         IRoutingResult TryExecute(INavigateContext context);
-
-        /// <summary>
-        /// Выполняяет сбрасывание маршрута.
-        /// </summary>
-        void Reset();
     }
 }

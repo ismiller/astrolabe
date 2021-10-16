@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using Windows.UI.Xaml.Controls;
+using Astrolabe.Pages;
 using Astrolabe.Routing.Abstraction;
 using Astrolabe.ViewModels;
 
@@ -12,7 +14,7 @@ namespace Astrolabe.Routing
     {
         #region Private Fields
 
-        private Dictionary<string, IRouteScheme> _schemes;
+        private readonly Dictionary<string, IRouteScheme> _schemes;
 
         #endregion Private Fields
 
@@ -29,7 +31,7 @@ namespace Astrolabe.Routing
         /// <inheritdoc />
         public void RegisterScheme<TNavigatable, TView>()
             where TNavigatable : INavigatable
-            where TView : class, new()
+            where TView : AstrolabePage, new()
         {
             Type viewModelType = typeof(TNavigatable);
             string key = viewModelType.FullName;
