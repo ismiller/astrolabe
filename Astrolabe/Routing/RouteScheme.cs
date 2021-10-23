@@ -3,21 +3,15 @@ using Astrolabe.Routing.Abstraction;
 
 namespace Astrolabe.Routing
 {
-    /// <summary>
-    /// Предоставляет схему маршурта.
-    /// </summary>
+    /// <inheritdoc />
     public class RouteScheme : IRouteScheme
     {
         #region Public Properties
 
-        /// <summary>
-        /// Предоставляет тип модели представления.
-        /// </summary>
+        /// <inheritdoc />
         public Type ViewModelType { get; }
 
-        /// <summary>
-        /// Предоставляет тип представления.
-        /// </summary>
+        /// <inheritdoc />
         public Type ViewType { get; }
 
         #endregion Public Properties

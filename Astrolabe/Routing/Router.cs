@@ -1,11 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using Astrolabe.Routing.Abstraction;
 using Astrolabe.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Astrolabe.Routing
 {
+    /// <summary>
+    /// Предоставляет функционал управления маршрута.
+    /// </summary>
     public class Router : IRouter
     {
         #region Private Fields
@@ -17,6 +19,11 @@ namespace Astrolabe.Routing
 
         #region Public Constructors
 
+        /// <summary>
+        /// Создает экземпляр <see cref="Route"/>.
+        /// </summary>
+        /// <param name="routeSchemeDictionary">Словарь маршрутов.</param>
+        /// <param name="provider">Провайдер сервисов.</param>
         public Router(IRouteSchemeDictionary routeSchemeDictionary, IServiceProvider provider)
         {
             _routeSchemeDictionary = routeSchemeDictionary ?? throw new ArgumentNullException(nameof(routeSchemeDictionary));
@@ -27,6 +34,7 @@ namespace Astrolabe.Routing
 
         #region Public Methods
 
+        /// <inheritdoc />
         public IBuildRouteResult GetRequiredRoute<TNavigatable>() where TNavigatable : INavigatable
         {
             if (_routeSchemeDictionary.TryGetScheme<TNavigatable>(out IRouteScheme scheme))

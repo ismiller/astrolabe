@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Astrolabe.Navigating.Abstraction
+﻿namespace Astrolabe.Navigating.Abstraction
 {
     /// <summary>
     /// Определяет набор параметров для навигации.

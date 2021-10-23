@@ -1,5 +1,8 @@
 ﻿namespace Astrolabe.Routing.Abstraction
 {
+    /// <summary>
+    /// Предоставляет результат составления маршрута.
+    /// </summary>
     public interface IBuildRouteResult
     {
         /// <summary>

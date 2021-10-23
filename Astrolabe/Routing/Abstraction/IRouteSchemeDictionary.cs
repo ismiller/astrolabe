@@ -1,6 +1,4 @@
-﻿using System;
-using Windows.UI.Xaml.Controls;
-using Astrolabe.Pages;
+﻿using Astrolabe.Pages;
 using Astrolabe.ViewModels;
 
 namespace Astrolabe.Routing.Abstraction

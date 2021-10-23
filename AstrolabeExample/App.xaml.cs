@@ -44,15 +44,12 @@ namespace AstrolabeExample
             collection.AddTransient<FirstViewModel>();
             collection.AddTransient<SecondViewModel>();
             collection.AddTransient<EndViewModel>();
-            IServiceProvider provider = collection.BuildServiceProvider();
 
             IRouteSchemeDictionary schemeDictionary = new RouteSchemeDictionary();
             schemeDictionary.RegisterScheme<StartViewModel, StartView>();
-            //schemeDictionary.RegisterScheme<FirstViewModel, FirstView>();
-            //schemeDictionary.RegisterScheme<SecondViewModel, SecondView>();
+            schemeDictionary.RegisterScheme<FirstViewModel, FirstView>();
+            schemeDictionary.RegisterScheme<SecondViewModel, SecondView>();
             schemeDictionary.RegisterScheme<EndViewModel, EndView>();
-
-            IRouter router = new Router(schemeDictionary, provider);
 
             // Do not repeat app initialization when the Window already has content,
             // just ensure that the window is active
@@ -75,13 +72,21 @@ namespace AstrolabeExample
             if (e.PrelaunchActivated == false)
             {
                 INavigateContext context = new NavigateContext(rootFrame, new FrameNavigationOptions());
-                IAstrolabe service = new AstrolabeNavigator(context);
+                _navigator = new AstrolabeNavigator(context);
+                collection.AddSingleton<IAstrolabe, AstrolabeNavigator>(s => _navigator);
+                IServiceProvider provider = collection.BuildServiceProvider();
+                IRouter router = new Router(schemeDictionary, provider);
+
+                IAstrolabe service = provider.GetRequiredService<IAstrolabe>();
+
                 service.SetRouter(router);
                 service.NavigateTo<StartViewModel>(default);
 
                 Window.Current.Activate();
             }
         }
+
+        private static AstrolabeNavigator _navigator;
 
         /// <summary>
         /// Invoked when Navigation to a certain page fails

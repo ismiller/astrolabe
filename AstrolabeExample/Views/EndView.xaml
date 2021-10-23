@@ -5,8 +5,97 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:pages="using:Astrolabe.Pages"
+    xmlns:vm="using:AstrolabeExample.ViewModels"
+    d:DataContext="{d:DesignInstance vm:EndViewModel}"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    RequestedTheme="Light"
     mc:Ignorable="d">
 
-    <Grid />
+    <StackPanel
+        Width="600"
+        HorizontalAlignment="Center"
+        VerticalAlignment="Center"
+        Orientation="Vertical"
+        Spacing="20">
+        <TextBlock
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            FontFamily="Segoe UI"
+            FontSize="18"
+            FontWeight="ExtraBold"
+            Text="Start page" />
+        <StackPanel
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Center"
+            Orientation="Horizontal">
+            <StackPanel
+                Width="300"
+                HorizontalAlignment="Left"
+                Orientation="Vertical"
+                Spacing="10">
+                <Button
+                    Width="96"
+                    Height="48"
+                    Padding="0"
+                    HorizontalAlignment="Left"
+                    Command="{Binding NavigateToBack}">
+                    <TextBlock
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        FontFamily="Segoe UI"
+                        FontSize="16"
+                        FontWeight="Bold"
+                        Text="Back" />
+                </Button>
+                <TextBlock
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    FontFamily="Segoe UI"
+                    FontSize="16"
+                    Text="Сообщение:"
+                    TextWrapping="Wrap" />
+                <TextBox
+                    VerticalAlignment="Stretch"
+                    Text="{Binding MessageTextForBack, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                    TextWrapping="Wrap" />
+            </StackPanel>
+            <StackPanel
+                Width="300"
+                HorizontalAlignment="Right"
+                Orientation="Vertical"
+                Spacing="10">
+                <Button
+                    Width="96"
+                    Height="48"
+                    Padding="0"
+                    HorizontalAlignment="Right"
+                    IsEnabled="False">
+                    <TextBlock
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        FontFamily="Segoe UI"
+                        FontSize="16"
+                        FontWeight="Bold"
+                        Text="Forward" />
+                </Button>
+                <TextBlock
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    FontFamily="Segoe UI"
+                    FontSize="16"
+                    Text="Сообщение:"
+                    TextWrapping="Wrap" />
+                <TextBox
+                    VerticalAlignment="Stretch"
+                    IsEnabled="False"
+                    TextWrapping="Wrap" />
+            </StackPanel>
+        </StackPanel>
+        <TextBlock
+            VerticalAlignment="Stretch"
+            FontFamily="Segoe UI"
+            FontSize="16"
+            Text="{Binding ReceivedMessage, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+            TextWrapping="Wrap" />
+    </StackPanel>
 </pages:AstrolabePage>
