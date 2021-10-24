@@ -130,6 +130,7 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="AstrolabeNavigateBuilder.cs" />
     <Compile Include="Navigating\Abstraction\INavigationOptions.cs" />
     <Compile Include="IAstrolabe.cs" />
     <Compile Include="Navigating\Abstraction\INavigationStack.cs" />

@@ -39,17 +39,22 @@ namespace AstrolabeExample
         {
             Frame rootFrame = Window.Current.Content as Frame;
 
+            AstrolabeNavigateBuilder builder = AstrolabeNavigateBuilder.GetBuilder();
+
             IServiceCollection collection = new ServiceCollection();
             collection.AddTransient<StartViewModel>();
             collection.AddTransient<FirstViewModel>();
             collection.AddTransient<SecondViewModel>();
             collection.AddTransient<EndViewModel>();
 
-            IRouteSchemeDictionary schemeDictionary = new RouteSchemeDictionary();
-            schemeDictionary.RegisterScheme<StartViewModel, StartView>();
-            schemeDictionary.RegisterScheme<FirstViewModel, FirstView>();
-            schemeDictionary.RegisterScheme<SecondViewModel, SecondView>();
-            schemeDictionary.RegisterScheme<EndViewModel, EndView>();
+            builder.SetServiceCollection(collection);
+            builder.RegisterRoutes(rs =>
+            {
+                rs.RegisterScheme<StartViewModel, StartView>();
+                rs.RegisterScheme<FirstViewModel, FirstView>();
+                rs.RegisterScheme<SecondViewModel, SecondView>();
+                rs.RegisterScheme<EndViewModel, EndView>();
+            });
 
             // Do not repeat app initialization when the Window already has content,
             // just ensure that the window is active
@@ -71,22 +76,16 @@ namespace AstrolabeExample
 
             if (e.PrelaunchActivated == false)
             {
-                INavigateContext context = new NavigateContext(rootFrame, new FrameNavigationOptions());
-                _navigator = new AstrolabeNavigator(context);
-                collection.AddSingleton<IAstrolabe, AstrolabeNavigator>(s => _navigator);
-                IServiceProvider provider = collection.BuildServiceProvider();
-                IRouter router = new Router(schemeDictionary, provider);
+                builder.SetNavigateContext(rootFrame);
 
-                IAstrolabe service = provider.GetRequiredService<IAstrolabe>();
-
-                service.SetRouter(router);
-                service.NavigateTo<StartViewModel>(default);
+                _navigator = builder.Build();
+                _navigator.NavigateTo<StartViewModel>(default);
 
                 Window.Current.Activate();
             }
         }
 
-        private static AstrolabeNavigator _navigator;
+        private static IAstrolabe _navigator;
 
         /// <summary>
         /// Invoked when Navigation to a certain page fails

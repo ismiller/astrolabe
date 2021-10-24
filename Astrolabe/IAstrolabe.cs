@@ -48,11 +48,5 @@ namespace Astrolabe
         /// <typeparam name="TViewModel">Тип модели представления на страницу которой производится навигация.</typeparam>
         /// <param name="navigationArgs">Аргументы навигации.</param>
         void NavigateTo<TViewModel>(INavigationArgs navigationArgs) where TViewModel : INavigatable;
-
-        /// <summary>
-        /// Выполняет установку маршрутизатора.
-        /// </summary>
-        /// <param name="router">Экземпляр маршрутизатора.</param>
-        void SetRouter(IRouter router);
     }
 }
