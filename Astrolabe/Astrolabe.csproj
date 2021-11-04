@@ -130,7 +130,8 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="AstrolabeNavigateBuilder.cs" />
+    <Compile Include="NavigatorBuilder.cs" />
+    <Compile Include="INavigatorBuilder.cs" />
     <Compile Include="Navigating\Abstraction\INavigationOptions.cs" />
     <Compile Include="IAstrolabe.cs" />
     <Compile Include="Navigating\Abstraction\INavigationStack.cs" />
@@ -167,9 +168,7 @@
       <Version>6.2.12</Version>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Exceptions\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

@@ -8,11 +8,12 @@ namespace Astrolabe.Routing
     /// <summary>
     /// Предоставляет функционал управления маршрута.
     /// </summary>
-    public class Router : IRouter
+    internal class Router : IRouter
     {
         #region Private Fields
 
-        private readonly IServiceProvider _provider;
+        private IServiceProvider _provider;
+        private readonly IServiceCollection _serviceCollection;
         private readonly IRouteSchemeDictionary _routeSchemeDictionary;
 
         #endregion Private Fields
@@ -23,11 +24,11 @@ namespace Astrolabe.Routing
         /// Создает экземпляр <see cref="Route"/>.
         /// </summary>
         /// <param name="routeSchemeDictionary">Словарь маршрутов.</param>
-        /// <param name="provider">Провайдер сервисов.</param>
-        public Router(IRouteSchemeDictionary routeSchemeDictionary, IServiceProvider provider)
+        /// <param name="collection">Коллекция сервисов.</param>
+        public Router(IRouteSchemeDictionary routeSchemeDictionary, IServiceCollection collection)
         {
             _routeSchemeDictionary = routeSchemeDictionary ?? throw new ArgumentNullException(nameof(routeSchemeDictionary));
-            _provider = provider ?? throw new ArgumentNullException(nameof(provider));
+            _serviceCollection = collection ?? throw new ArgumentNullException(nameof(collection));
         }
 
         #endregion Public Constructors
@@ -49,6 +50,12 @@ namespace Astrolabe.Routing
             }
 
             return BuildRouteResult.Failed("Route not found");
+        }
+
+        /// <inheritdoc />
+        public void Activate()
+        {
+            _provider = _serviceCollection.BuildServiceProvider();
         }
 
         #endregion Public Methods

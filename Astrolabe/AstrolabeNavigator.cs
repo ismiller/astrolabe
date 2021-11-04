@@ -10,15 +10,13 @@ namespace Astrolabe
     /// <summary>
     /// Предоставляет функционал управления навигацией.
     /// </summary>
-    public class AstrolabeNavigator : IAstrolabe
+    internal class AstrolabeNavigator : IAstrolabe
     {
         #region Private Fields
 
         private readonly INavigateContext _context;
-
         private readonly INavigationStack<IRoute> _navigationStack;
-
-        private IRouter _router;
+        private readonly IRouter _router;
 
         #endregion Private Fields
 
@@ -35,9 +33,11 @@ namespace Astrolabe
         /// Создает экземпляр <see cref="AstrolabeNavigator"/>.
         /// </summary>
         /// <param name="context">Контекст навигации.</param>
-        public AstrolabeNavigator(INavigateContext context)
+        /// <param name="router">Маршрутизатор.</param>
+        public AstrolabeNavigator(INavigateContext context, IRouter router)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
+            _router = router ?? throw new ArgumentNullException(nameof(router));
             _navigationStack = new NavigationStack<IRoute>();
         }
 
@@ -116,13 +116,6 @@ namespace Astrolabe
                     Navigated?.Invoke(this, EventArgs.Empty);
                 }
             }
-        }
-
-        /// <inheritdoc />
-        ///TODO: временный метод, пока не будет реализован билдер для сервиса навигации.
-        public void SetRouter(IRouter router)
-        {
-            _router = router ?? throw new ArgumentNullException(nameof(router));
         }
 
         #endregion Public Methods

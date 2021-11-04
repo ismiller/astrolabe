@@ -5,10 +5,6 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using Astrolabe;
-using Astrolabe.Pages;
-using Astrolabe.Pages.Abstractions;
-using Astrolabe.Routing;
-using Astrolabe.Routing.Abstraction;
 using AstrolabeExample.ViewModels;
 using AstrolabeExample.Views;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,6 +16,14 @@ namespace AstrolabeExample
     /// </summary>
     sealed partial class App : Application
     {
+        #region Private Fields
+
+        private static IAstrolabe _navigator;
+
+        #endregion Private Fields
+
+        #region Public Constructors
+
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
@@ -30,6 +34,10 @@ namespace AstrolabeExample
             this.Suspending += OnSuspending;
         }
 
+        #endregion Public Constructors
+
+        #region Protected Methods
+
         /// <summary>
         /// Invoked when the application is launched normally by the end user.  Other entry points
         /// will be used such as when the application is launched to open a specific file.
@@ -39,7 +47,7 @@ namespace AstrolabeExample
         {
             Frame rootFrame = Window.Current.Content as Frame;
 
-            AstrolabeNavigateBuilder builder = AstrolabeNavigateBuilder.GetBuilder();
+            INavigatorBuilder builder = NavigatorBuilder.GetBuilder();
 
             IServiceCollection collection = new ServiceCollection();
             collection.AddTransient<StartViewModel>();
@@ -56,11 +64,8 @@ namespace AstrolabeExample
                 rs.RegisterScheme<EndViewModel, EndView>();
             });
 
-            // Do not repeat app initialization when the Window already has content,
-            // just ensure that the window is active
             if (rootFrame == null)
             {
-                // Create a Frame to act as the navigation context and navigate to the first page
                 rootFrame = new Frame();
 
                 rootFrame.NavigationFailed += OnNavigationFailed;
@@ -70,7 +75,6 @@ namespace AstrolabeExample
                     //TODO: Load state from previously suspended application
                 }
 
-                // Place the frame in the current Window
                 Window.Current.Content = rootFrame;
             }
 
@@ -85,7 +89,9 @@ namespace AstrolabeExample
             }
         }
 
-        private static IAstrolabe _navigator;
+        #endregion Protected Methods
+
+        #region Private Methods
 
         /// <summary>
         /// Invoked when Navigation to a certain page fails
@@ -110,5 +116,7 @@ namespace AstrolabeExample
             //TODO: Save application state and stop any background activity
             deferral.Complete();
         }
+
+        #endregion Private Methods
     }
 }

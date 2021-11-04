@@ -10,7 +10,6 @@ namespace Astrolabe.Routing
         #region Private Fields
 
         private readonly IViewModelContainer _viewModelContainer;
-
         private readonly Type _viewType;
 
         #endregion Private Fields

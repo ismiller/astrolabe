@@ -13,7 +13,6 @@ namespace Astrolabe.Navigating
         #region Private Fields
 
         private readonly Stack<TElement> _stack;
-
         private TElement _suspendElement;
 
         #endregion Private Fields

@@ -1,6 +1,5 @@
 ﻿using System;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
 using Astrolabe.Pages.Abstractions;
 using Astrolabe.ViewModels;
@@ -15,7 +14,6 @@ namespace Astrolabe.Pages
         #region Private Fields
 
         private readonly Frame _frame;
-
         private readonly FrameNavigationOptions _navigationOptions;
 
         #endregion Private Fields
@@ -31,8 +29,6 @@ namespace Astrolabe.Pages
         {
             _frame = frame ?? throw new ArgumentNullException(nameof(frame));
             _navigationOptions = navigationOptions ?? throw new ArgumentNullException(nameof(navigationOptions));
-            _navigationOptions.IsNavigationStackEnabled = false;
-            _navigationOptions.TransitionInfoOverride = new SuppressNavigationTransitionInfo();
         }
 
         #endregion Public Constructors
