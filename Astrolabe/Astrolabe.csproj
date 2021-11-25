@@ -131,6 +131,8 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Exceptions\Cather.cs" />
+    <Compile Include="Exceptions\Verifications\Argument.cs" />
     <Compile Include="NavigatorBuilder.cs" />
     <Compile Include="INavigatorBuilder.cs" />
     <Compile Include="Navigating\Abstraction\INavigationOptions.cs" />
