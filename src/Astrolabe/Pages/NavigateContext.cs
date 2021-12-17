@@ -1,6 +1,7 @@
 ﻿using System;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
+using Astrolabe.Exceptions.Verifications;
 using Astrolabe.Pages.Abstractions;
 using Astrolabe.ViewModels;
 
@@ -27,8 +28,10 @@ namespace Astrolabe.Pages
         /// <param name="navigationOptions">Опции навигации.</param>
         public NavigateContext(Frame frame, FrameNavigationOptions navigationOptions)
         {
-            _frame = frame ?? throw new ArgumentNullException(nameof(frame));
-            _navigationOptions = navigationOptions ?? throw new ArgumentNullException(nameof(navigationOptions));
+            ArgumentExtension.NotNull(frame, nameof(frame));
+            ArgumentExtension.NotNull(navigationOptions, nameof(navigationOptions));
+            _frame = frame;
+            _navigationOptions = navigationOptions;
         }
 
         #endregion Public Constructors

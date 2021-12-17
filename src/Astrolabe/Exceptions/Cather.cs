@@ -2,8 +2,6 @@
 using System.Diagnostics;
 using Astrolabe.Exceptions.Verifications;
 
-;
-
 namespace Astrolabe.Exceptions
 {
     public static class Cather
@@ -12,7 +10,7 @@ namespace Astrolabe.Exceptions
         {
             try
             {
-                Argument.NotNull(action, nameof(action));
+                action.NotNull(nameof(action));
                 action.Invoke(arg);
             }
             catch (TException e)

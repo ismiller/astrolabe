@@ -3,9 +3,9 @@ using System.Globalization;
 
 namespace Astrolabe.Exceptions.Verifications
 {
-    public static class Argument
+    public static class ArgumentExtension
     {
-        public static void NotNull<T>(T value, string name) where T : class
+        public static void NotNull<T>(this T value, string name) where T : class
         {
             if (value is null)
             {
@@ -13,7 +13,7 @@ namespace Astrolabe.Exceptions.Verifications
             }
         }
 
-        public static void NotNullOrWhiteSpace(string value, string name)
+        public static void NotNullOrWhiteSpace(this string value, string name)
         {
             if (string.IsNullOrWhiteSpace(value))
             {
