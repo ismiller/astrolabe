@@ -3,6 +3,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using Astrolabe.ViewModels;
+using Astrolabe.ViewModels.Abstractions;
 
 namespace Astrolabe.Pages
 {
@@ -12,6 +13,8 @@ namespace Astrolabe.Pages
         #region Private Fields
 
         private INavigatable _viewModel;
+        private readonly IViewObserver _observer;
+        private readonly IViewObserverCaller _observerCaller;
 
         #endregion Private Fields
 
@@ -40,8 +43,11 @@ namespace Astrolabe.Pages
         /// <summary>
         /// Создает экземпляр <see cref="AstrolabePage"/>.
         /// </summary>
-        public AstrolabePage()
+        protected AstrolabePage()
         {
+            _observer = new ViewObserver();
+            _observerCaller = _observer as IViewObserverCaller;
+
             Loading += AstrolabePage_OnLoading;
             Loaded += AstrolabePage_OnLoaded;
             Unloaded += AstrolabePage_OnUnloaded;
@@ -75,7 +81,8 @@ namespace Astrolabe.Pages
         /// <inheritdoc />
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
-            ViewModel?.Left();
+            _observerCaller?.ViewLeft();
+
             base.OnNavigatedFrom(e);
         }
 
@@ -83,17 +90,21 @@ namespace Astrolabe.Pages
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
+
             if (e.Parameter is IViewModelContainer container)
             {
                 ViewModel = container.ViewModel;
+                ViewModel.SetObserver(_observer);
             }
-            ViewModel?.ViewCreated();
+
+            _observerCaller?.ViewCreated();
         }
 
         /// <inheritdoc />
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
-            ViewModel?.Leave();
+            _observerCaller?.ViewLeave();
+
             base.OnNavigatingFrom(e);
         }
 
@@ -110,17 +121,17 @@ namespace Astrolabe.Pages
 
         private void AstrolabePage_OnLoaded(object sender, RoutedEventArgs e)
         {
-            _viewModel?.ViewLoaded();
+            _observerCaller?.ViewLoaded();
         }
 
         private void AstrolabePage_OnLoading(FrameworkElement sender, object args)
         {
-            _viewModel?.ViewLoading();
+            _observerCaller?.ViewLoading();
         }
 
         private void AstrolabePage_OnUnloaded(object sender, RoutedEventArgs e)
         {
-            _viewModel?.ViewUnloaded();
+            _observerCaller?.ViewUnloaded();
         }
 
         #endregion Private Methods

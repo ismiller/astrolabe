@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Windows.Input;
 using Astrolabe;
 using Astrolabe.Navigating.Options;
 using Astrolabe.ViewModels;
+using Astrolabe.ViewModels.Abstractions;
 using AstrolabeExample.Helpers;
 using AstrolabeExample.ViewModels.Base;
 
@@ -61,6 +63,7 @@ namespace AstrolabeExample.ViewModels
 
         public void Leave()
         {
+            Debug.WriteLine("\t -> Leave.");
         }
 
         public void Left()
@@ -68,6 +71,7 @@ namespace AstrolabeExample.ViewModels
             MessageTextForBack = String.Empty;
             MessageTextForForward = String.Empty;
             ReceivedMessage = String.Empty;
+            Debug.WriteLine("\t -> Left.");
         }
 
         public void Prepare(INavigationArgs args)
@@ -81,20 +85,36 @@ namespace AstrolabeExample.ViewModels
             }
         }
 
+        public void SetObserver(IViewObserver observer)
+        {
+            observer.ListenViewCreated(ViewCreated);
+            observer.ListenViewLeave(Leave);
+            observer.ListenViewLeft(Left);
+            observer.ListenViewLoaded(ViewLoaded);
+            observer.ListenViewLoading(ViewLoading);
+            observer.ListenViewUnloaded(ViewUnloaded);
+
+            Debug.WriteLine("\t -> Set observer.");
+        }
+
         public void ViewCreated()
         {
+            Debug.WriteLine("\t -> View created.");
         }
 
         public void ViewLoaded()
         {
+            Debug.WriteLine("\t -> View loaded.");
         }
 
         public void ViewLoading()
         {
+            Debug.WriteLine("\t -> View loading.");
         }
 
         public void ViewUnloaded()
         {
+            Debug.WriteLine("\t -> View unloaded.");
         }
 
         #endregion Public Methods

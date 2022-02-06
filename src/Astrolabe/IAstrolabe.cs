@@ -1,6 +1,7 @@
 ﻿using System;
 using Astrolabe.Navigating.Abstraction;
 using Astrolabe.ViewModels;
+using Astrolabe.ViewModels.Abstractions;
 
 namespace Astrolabe
 {

@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
+using Astrolabe.Exceptions.Verifications;
 using Astrolabe.Routing.Abstraction;
 using Astrolabe.ViewModels;
+using Astrolabe.ViewModels.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Astrolabe.Routing
@@ -8,7 +11,7 @@ namespace Astrolabe.Routing
     /// <summary>
     /// Предоставляет функционал управления маршрута.
     /// </summary>
-    internal class Router : IRouter
+    internal sealed class Router : IRouter
     {
         #region Private Fields
 
@@ -27,8 +30,8 @@ namespace Astrolabe.Routing
         /// <param name="collection">Коллекция сервисов.</param>
         public Router(IRouteSchemeDictionary routeSchemeDictionary, IServiceCollection collection)
         {
-            _routeSchemeDictionary = routeSchemeDictionary ?? throw new ArgumentNullException(nameof(routeSchemeDictionary));
-            _serviceCollection = collection ?? throw new ArgumentNullException(nameof(collection));
+            _routeSchemeDictionary = Security.NotNull(routeSchemeDictionary, nameof(routeSchemeDictionary));
+            _serviceCollection = Security.NotNull(collection, nameof(collection));
         }
 
         #endregion Public Constructors
@@ -53,6 +56,7 @@ namespace Astrolabe.Routing
         }
 
         /// <inheritdoc />
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Activate()
         {
             _provider = _serviceCollection.BuildServiceProvider();

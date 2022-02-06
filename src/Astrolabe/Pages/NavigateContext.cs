@@ -4,13 +4,14 @@ using Windows.UI.Xaml.Navigation;
 using Astrolabe.Exceptions.Verifications;
 using Astrolabe.Pages.Abstractions;
 using Astrolabe.ViewModels;
+using Astrolabe.ViewModels.Abstractions;
 
 namespace Astrolabe.Pages
 {
     /// <summary>
     /// Предоставляет функционал контекста навигации.
     /// </summary>
-    public class NavigateContext : INavigateContext
+    internal sealed class NavigateContext : INavigateContext
     {
         #region Private Fields
 
@@ -28,10 +29,8 @@ namespace Astrolabe.Pages
         /// <param name="navigationOptions">Опции навигации.</param>
         public NavigateContext(Frame frame, FrameNavigationOptions navigationOptions)
         {
-            ArgumentExtension.NotNull(frame, nameof(frame));
-            ArgumentExtension.NotNull(navigationOptions, nameof(navigationOptions));
-            _frame = frame;
-            _navigationOptions = navigationOptions;
+            _frame = Security.NotNull(frame, nameof(frame));
+            _navigationOptions = Security.NotNull(navigationOptions, nameof(navigationOptions));
         }
 
         #endregion Public Constructors

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Astrolabe.ViewModels
+namespace Astrolabe.ViewModels.Abstractions
 {
     /// <summary>
     /// Представляет аргумент навигации.

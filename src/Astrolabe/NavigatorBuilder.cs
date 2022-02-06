@@ -2,10 +2,12 @@
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
+using Astrolabe.Exceptions.Verifications;
 using Astrolabe.Pages;
 using Astrolabe.Pages.Abstractions;
 using Astrolabe.Routing;
 using Astrolabe.Routing.Abstraction;
+using Astrolabe.Routing.Schemes;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Astrolabe
@@ -13,7 +15,7 @@ namespace Astrolabe
     /// <summary>
     /// Предоставляет функционал для сборки сервиса навигации.
     /// </summary>
-    public class NavigatorBuilder : INavigatorBuilder
+    public sealed class NavigatorBuilder : INavigatorBuilder
     {
         #region Private Fields
 
@@ -42,13 +44,10 @@ namespace Astrolabe
         /// <inheritdoc />
         public IAstrolabe Build()
         {
-            if (_navigateContext is null)
-            {
-                throw new ArgumentNullException(nameof(_navigateContext));
-            }
+            Security.NotNull(_navigateContext, nameof(_navigateContext));
 
             IRouter router = new Router(_schemeDictionary, _serviceCollection);
-            AstrolabeNavigator astrolabe = new AstrolabeNavigator(_navigateContext, router);
+            var astrolabe = new AstrolabeNavigator(_navigateContext, router);
             _serviceCollection.AddSingleton<IAstrolabe>(s => astrolabe);
             router.Activate();
             return astrolabe;
@@ -64,10 +63,7 @@ namespace Astrolabe
         /// <inheritdoc />
         public INavigatorBuilder SetNavigateContext(Frame frame)
         {
-            if (frame is null)
-            {
-                throw new ArgumentNullException(nameof(frame));
-            }
+            Security.NotNull(frame, nameof(frame));
 
             var transitionInfo = new SuppressNavigationTransitionInfo();
             var options = new FrameNavigationOptions()
@@ -82,10 +78,7 @@ namespace Astrolabe
         /// <inheritdoc />
         public INavigatorBuilder SetNavigateContext(Frame frame, FrameNavigationOptions options)
         {
-            if (options is null)
-            {
-                throw new ArgumentNullException(nameof(options));
-            }
+            Security.NotNull(options, nameof(frame));
 
             _navigateContext = new NavigateContext(frame, options);
 
@@ -95,7 +88,7 @@ namespace Astrolabe
         /// <inheritdoc />
         public INavigatorBuilder SetServiceCollection(IServiceCollection collection)
         {
-            _serviceCollection = collection ?? throw new ArgumentNullException(nameof(collection));
+            _serviceCollection = Security.NotNull(collection, nameof(collection));
             return this;
         }
 

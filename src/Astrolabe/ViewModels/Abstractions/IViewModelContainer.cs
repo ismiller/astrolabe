@@ -1,4 +1,4 @@
-﻿namespace Astrolabe.ViewModels
+﻿namespace Astrolabe.ViewModels.Abstractions
 {
     /// <summary>
     /// Предоставляет контейнер для экземпляря мрдели представления.

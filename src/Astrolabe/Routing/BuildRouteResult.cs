@@ -2,7 +2,10 @@
 
 namespace Astrolabe.Routing
 {
-    public class BuildRouteResult : IBuildRouteResult
+    /// <summary>
+    /// Предоставляет результат составления маршрута.
+    /// </summary>
+    internal sealed class BuildRouteResult : IBuildRouteResult
     {
         #region Public Properties
 
@@ -19,16 +22,11 @@ namespace Astrolabe.Routing
 
         #region Private Constructors
 
-        private BuildRouteResult(bool isSuccess, IRoute route, string message)
+        private BuildRouteResult(bool isSuccess, string message, IRoute route = default)
         {
             IsSuccess = isSuccess;
             Message = message;
             Route = route;
-        }
-
-        private BuildRouteResult(bool isSuccess, string message)
-            : this(isSuccess, default, message)
-        {
         }
 
         #endregion Private Constructors
@@ -53,7 +51,7 @@ namespace Astrolabe.Routing
         /// <returns>Результат получения маршрута.</returns>
         public static IBuildRouteResult Succeeded(IRoute route, string message = default)
         {
-            return new BuildRouteResult(true, route, message);
+            return new BuildRouteResult(true, message, route);
         }
 
         #endregion Public Methods

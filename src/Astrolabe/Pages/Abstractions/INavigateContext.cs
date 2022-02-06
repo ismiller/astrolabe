@@ -1,6 +1,7 @@
 ﻿using System;
 using Windows.UI.Xaml.Controls;
 using Astrolabe.ViewModels;
+using Astrolabe.ViewModels.Abstractions;
 
 namespace Astrolabe.Pages.Abstractions
 {

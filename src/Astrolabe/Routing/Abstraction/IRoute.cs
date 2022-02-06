@@ -3,7 +3,7 @@
 namespace Astrolabe.Routing.Abstraction
 {
     /// <summary>
-    /// Преддоставляет функционал управления маршрутом.
+    /// Определяет функционал управления маршрутом.
     /// </summary>
     public interface IRoute
     {

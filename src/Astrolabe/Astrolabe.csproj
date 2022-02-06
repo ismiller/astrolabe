@@ -132,7 +132,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Exceptions\Cather.cs" />
-    <Compile Include="Exceptions\Verifications\ArgumentExtension.cs" />
+    <Compile Include="Helpers\Security.cs" />
     <Compile Include="NavigatorBuilder.cs" />
     <Compile Include="INavigatorBuilder.cs" />
     <Compile Include="Navigating\Abstraction\INavigationOptions.cs" />
@@ -142,25 +142,32 @@
     <Compile Include="AstrolabeNavigator.cs" />
     <Compile Include="Navigating\Options\NavigationOptions.cs" />
     <Compile Include="Pages\Abstractions\INavigateContext.cs" />
+    <Compile Include="Pages\AstrolabeFrame.cs" />
     <Compile Include="Pages\AstrolabePage.cs" />
     <Compile Include="Pages\NavigateContext.cs" />
     <Compile Include="Routing\Abstraction\IRouteSchemeDictionary.cs" />
     <Compile Include="Routing\Abstraction\IBuildRouteResult.cs" />
     <Compile Include="Routing\Abstraction\IRouteScheme.cs" />
+    <Compile Include="Routing\Abstraction\ISchemeBlank.cs" />
+    <Compile Include="Routing\Abstraction\ISchemeBuilder.cs" />
     <Compile Include="Routing\BuildRouteResult.cs" />
     <Compile Include="Routing\Route.cs" />
-    <Compile Include="Routing\RouteSchemeDictionary.cs" />
+    <Compile Include="Routing\Schemes\RouteSchemeDictionary.cs" />
     <Compile Include="Routing\Router.cs" />
-    <Compile Include="Routing\RouteScheme.cs" />
+    <Compile Include="Routing\Schemes\RouteScheme.cs" />
     <Compile Include="Routing\RoutingResult.cs" />
-    <Compile Include="ViewModels\IViewModelContainer.cs" />
-    <Compile Include="ViewModels\INavigationArgs.cs" />
+    <Compile Include="Routing\Schemes\SchemeBuilder.cs" />
+    <Compile Include="ViewModels\Abstractions\IViewModelContainer.cs" />
+    <Compile Include="ViewModels\Abstractions\INavigationArgs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Routing\Abstraction\IRoute.cs" />
     <Compile Include="Routing\Abstraction\IRouter.cs" />
     <Compile Include="Routing\Abstraction\IRoutingResult.cs" />
-    <Compile Include="ViewModels\INavigatable.cs" />
+    <Compile Include="ViewModels\Abstractions\INavigatable.cs" />
+    <Compile Include="ViewModels\Abstractions\IViewObserver.cs" />
+    <Compile Include="ViewModels\Abstractions\IViewObserverCaller.cs" />
     <Compile Include="ViewModels\ViewModelContainer.cs" />
+    <Compile Include="ViewModels\ViewObserver.cs" />
     <EmbeddedResource Include="Properties\Astrolabe.rd.xml" />
   </ItemGroup>
   <ItemGroup>

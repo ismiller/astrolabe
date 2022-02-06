@@ -1,10 +1,11 @@
 ﻿using System;
+using Astrolabe.Exceptions.Verifications;
 using Astrolabe.Routing.Abstraction;
 
-namespace Astrolabe.Routing
+namespace Astrolabe.Routing.Schemes
 {
     /// <inheritdoc />
-    public class RouteScheme : IRouteScheme
+    internal sealed class RouteScheme : IRouteScheme
     {
         #region Public Properties
 
@@ -25,8 +26,8 @@ namespace Astrolabe.Routing
         /// <param name="viewType">Тип представления.</param>
         public RouteScheme(Type viewModelType, Type viewType)
         {
-            ViewModelType = viewModelType ?? throw new NullReferenceException(nameof(viewModelType));
-            ViewType = viewType ?? throw new ArgumentNullException(nameof(viewType));
+            ViewModelType = Security.NotNull(viewModelType, nameof(viewModelType));
+            ViewType = Security.NotNull(viewType, nameof(viewType));
         }
 
         #endregion Public Constructors

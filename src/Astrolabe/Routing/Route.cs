@@ -1,11 +1,16 @@
 ﻿using System;
+using Astrolabe.Exceptions.Verifications;
 using Astrolabe.Pages.Abstractions;
 using Astrolabe.Routing.Abstraction;
 using Astrolabe.ViewModels;
+using Astrolabe.ViewModels.Abstractions;
 
 namespace Astrolabe.Routing
 {
-    public class Route : IRoute
+    /// <summary>
+    /// Предоставляет функционал управления маршрутом.
+    /// </summary>
+    internal sealed class Route : IRoute
     {
         #region Private Fields
 
@@ -23,7 +28,7 @@ namespace Astrolabe.Routing
         /// <param name="viewType">Тип представления.</param>
         public Route(INavigatable viewModel, Type viewType)
         {
-            _viewType = viewType;
+            _viewType = Security.NotNull(viewType, nameof(viewType));
             _viewModelContainer = new ViewModelContainer(viewModel);
         }
 

@@ -1,5 +1,5 @@
 ﻿using System;
-using Astrolabe.ViewModels;
+using Astrolabe.ViewModels.Abstractions;
 
 namespace AstrolabeExample.Helpers
 {

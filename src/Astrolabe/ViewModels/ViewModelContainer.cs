@@ -1,7 +1,9 @@
-﻿namespace Astrolabe.ViewModels
+﻿using Astrolabe.ViewModels.Abstractions;
+
+namespace Astrolabe.ViewModels
 {
     /// <inheritdoc />
-    public class ViewModelContainer : IViewModelContainer
+    internal sealed class ViewModelContainer : IViewModelContainer
     {
         /// <inheritdoc />
         public INavigatable ViewModel { get; }

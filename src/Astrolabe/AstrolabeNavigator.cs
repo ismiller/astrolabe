@@ -4,13 +4,14 @@ using Astrolabe.Navigating.Abstraction;
 using Astrolabe.Pages.Abstractions;
 using Astrolabe.Routing.Abstraction;
 using Astrolabe.ViewModels;
+using Astrolabe.ViewModels.Abstractions;
 
 namespace Astrolabe
 {
     /// <summary>
     /// Предоставляет функционал управления навигацией.
     /// </summary>
-    internal class AstrolabeNavigator : IAstrolabe
+    internal sealed class AstrolabeNavigator : IAstrolabe
     {
         #region Private Fields
 

@@ -4,13 +4,13 @@ using Astrolabe.Exceptions.Verifications;
 
 namespace Astrolabe.Exceptions
 {
-    public static class Cather
+    internal static class Cather
     {
         public static void TryInvoke<TException, TArg>(this Action<TArg> action, TArg arg) where TException : Exception
         {
             try
             {
-                action.NotNull(nameof(action));
+                Security.NotNull(action, nameof(action));
                 action.Invoke(arg);
             }
             catch (TException e)

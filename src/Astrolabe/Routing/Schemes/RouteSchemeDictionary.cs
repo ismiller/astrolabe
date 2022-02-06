@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using Astrolabe.Pages;
 using Astrolabe.Routing.Abstraction;
-using Astrolabe.ViewModels;
+using Astrolabe.ViewModels.Abstractions;
 
-namespace Astrolabe.Routing
+namespace Astrolabe.Routing.Schemes
 {
     /// <summary>
     /// Предоставляет функционал словаря маршрутов.
     /// </summary>
-    public class RouteSchemeDictionary : IRouteSchemeDictionary
+    internal sealed class RouteSchemeDictionary : IRouteSchemeDictionary
     {
         #region Private Fields
 

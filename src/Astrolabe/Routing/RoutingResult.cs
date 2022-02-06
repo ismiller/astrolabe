@@ -1,10 +1,11 @@
 ﻿using Astrolabe.Routing.Abstraction;
 using Astrolabe.ViewModels;
+using Astrolabe.ViewModels.Abstractions;
 
 namespace Astrolabe.Routing
 {
     /// <inheritdoc />
-    public class RoutingResult : IRoutingResult
+    internal sealed class RoutingResult : IRoutingResult
     {
         #region Private Fields
 

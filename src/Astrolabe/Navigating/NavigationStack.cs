@@ -8,7 +8,7 @@ namespace Astrolabe.Navigating
     /// Предоставляет функционал стека навигации.
     /// </summary>
     /// <typeparam name="TElement"></typeparam>
-    public class NavigationStack<TElement> : INavigationStack<TElement>
+    internal sealed class NavigationStack<TElement> : INavigationStack<TElement>
     {
         #region Private Fields
 
@@ -81,7 +81,7 @@ namespace Astrolabe.Navigating
         /// <inheritdoc />
         public bool TryPop(out TElement element)
         {
-            if (!Any())
+            if (Any() == false)
             {
                 element = _suspendElement;
                 return false;
