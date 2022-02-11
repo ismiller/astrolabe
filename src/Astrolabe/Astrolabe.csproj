@@ -132,6 +132,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Exceptions\Cather.cs" />
+    <Compile Include="Extension\VisualTreeHelpers.cs" />
     <Compile Include="Helpers\Security.cs" />
     <Compile Include="NavigatorBuilder.cs" />
     <Compile Include="INavigatorBuilder.cs" />
