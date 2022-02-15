@@ -1,23 +1,23 @@
 ﻿using System;
 using System.Linq;
 using Windows.UI.Xaml;
-using Astrolabe.Core.Pages.Abstractions;
-using Astrolabe.Core.Routing.Abstraction;
+using Astrolabe.Core.Components.Abstractions;
+using Astrolabe.Core.Routing.Context.Abstraction;
 using Astrolabe.UWP.Controls;
 using Astrolabe.UWP.Extensions;
 
 namespace Astrolabe.UWP;
 
-public class RouteExecutionContextProvider : IRouteExecutionContextProvider
+public class RouteContextProvider : IRouteContextProvider
 {
-    private IRouteExecutionContextCreator _creator;
+    private readonly IRouteContextResolver _resolver;
 
-    public RouteExecutionContextProvider(IRouteExecutionContextCreator creator)
+    public RouteContextProvider(IRouteContextResolver resolver)
     {
-        _creator = creator;
+        _resolver = resolver;
     }
 
-    public IRouteExecutionContext GetCurrentContext(IContextInfo info)
+    public IRouteContext GetContext(IContextInfo info)
     {
         AstrolabeFrame rootFrame = Window.Current.Content as AstrolabeFrame;
         if (rootFrame is null)
@@ -27,7 +27,7 @@ public class RouteExecutionContextProvider : IRouteExecutionContextProvider
         }
 
         INavigationFrame frame = rootFrame.FindChildren<AstrolabeFrame>()
-            .FirstOrDefault(c => c.NavigationKey == info.RequiredContextKey);
+            .FirstOrDefault(c => c.ContextKey == info.RequiredContextKey);
 
         if (frame is null)
         {
@@ -37,9 +37,9 @@ public class RouteExecutionContextProvider : IRouteExecutionContextProvider
                 throw new ArgumentNullException(nameof(frame));
             }
 
-            return _creator.CreateRouteExecutionContext(rootFrame, info.FrameOptions);
+            return _resolver.Resolve(rootFrame, info.FrameOptions);
         }
 
-        return _creator.CreateRouteExecutionContext(frame, info.FrameOptions);
+        return _resolver.Resolve(frame, info.FrameOptions);
     }
 }

@@ -41,7 +41,7 @@ namespace Astrolabe.UWP.Extensions
 
         internal static AstrolabeFrame FindFrame(this IEnumerable<AstrolabeFrame> frames, string key)
         {
-            return frames.FirstOrDefault(frame => frame.NavigationKey == key);
+            return frames.FirstOrDefault(frame => frame.ContextKey == key);
         }
     }
 }

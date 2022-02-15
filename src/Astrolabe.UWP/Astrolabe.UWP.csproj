@@ -135,7 +135,7 @@
     <Compile Include="Extensions\VisualTreeExtensions.cs" />
     <Compile Include="Navigating\FrameOptions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RouteExecutionContextProvider.cs" />
+    <Compile Include="RouteContextProvider.cs" />
     <EmbeddedResource Include="Properties\Astrolabe.UWP.rd.xml" />
   </ItemGroup>
   <ItemGroup>

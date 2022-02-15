@@ -1,7 +1,7 @@
 ﻿using System;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
-using Astrolabe.Core.Pages.Abstractions;
+using Astrolabe.Core.Components.Abstractions;
 
 namespace Astrolabe.UWP.Navigating
 {
@@ -25,6 +25,12 @@ namespace Astrolabe.UWP.Navigating
 
         public FrameOptions() : this(new SuppressNavigationTransitionInfo())
         {
+        }
+
+        public static FrameOptions CreateDefault()
+        {
+            SuppressNavigationTransitionInfo transitionInfo = new();
+            return new FrameOptions(transitionInfo);
         }
     }
 }

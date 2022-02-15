@@ -2,7 +2,7 @@
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
-using Astrolabe.Core.Pages.Abstractions;
+using Astrolabe.Core.Components.Abstractions;
 using Astrolabe.Core.ViewModels;
 using Astrolabe.Core.ViewModels.Abstractions;
 
