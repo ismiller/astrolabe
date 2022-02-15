@@ -17,6 +17,7 @@ internal sealed class Router : IRouter
     private IServiceProvider _provider;
     private readonly IServiceCollection _serviceCollection;
     private readonly IRouteSchemeDictionary _routeSchemeDictionary;
+    private readonly IRouteExecutionContextProvider _contextProvider;
 
     #endregion Private Fields
 
@@ -27,8 +28,9 @@ internal sealed class Router : IRouter
     /// </summary>
     /// <param name="routeSchemeDictionary">Словарь маршрутов.</param>
     /// <param name="collection">Коллекция сервисов.</param>
-    public Router(IRouteSchemeDictionary routeSchemeDictionary, IServiceCollection collection)
+    public Router(IRouteSchemeDictionary routeSchemeDictionary, IServiceCollection collection, IRouteExecutionContextProvider contextProvider)
     {
+        _contextProvider = Security.NotNull(contextProvider, nameof(contextProvider));
         _routeSchemeDictionary = Security.NotNull(routeSchemeDictionary, nameof(routeSchemeDictionary));
         _serviceCollection = Security.NotNull(collection, nameof(collection));
     }
@@ -42,6 +44,12 @@ internal sealed class Router : IRouter
     {
         if (_routeSchemeDictionary.TryGetScheme<T>(out IRouteScheme scheme))
         {
+            IRouteExecutionContext context = _contextProvider.GetCurrentContext(scheme.ContextInfo);
+
+            if (context is null && scheme.ContextInfo.IsExecuteOnlySpecifiedContext)
+            {
+            }
+
             object viewModel = _provider.GetRequiredService(scheme.ViewModelType);
 
             if (viewModel is T concreteViewModel)

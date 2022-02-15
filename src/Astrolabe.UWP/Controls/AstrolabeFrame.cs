@@ -15,7 +15,7 @@ namespace Astrolabe.UWP.Controls
                 ownerType: typeof(AstrolabeFrame),
                 typeMetadata: new PropertyMetadata(string.Empty));
 
-        public bool NavigateToType(Type viewType, IViewModelContainer container, object options)
+        public bool NavigateToType(Type viewType, IViewModelContainer container, IFrameOptions options)
         {
             return NavigateToType(viewType, container, options);
         }

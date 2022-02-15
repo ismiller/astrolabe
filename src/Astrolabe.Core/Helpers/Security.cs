@@ -40,4 +40,11 @@ internal static class Security
 
         return value;
     }
+
+    public static T NotNul<T>(
+        this T argument,
+        [CallerArgumentExpression("argument")] string name = "") where T : class
+    {
+        return argument ?? throw new ArgumentNullException(name);
+    }
 }

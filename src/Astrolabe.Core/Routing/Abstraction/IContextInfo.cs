@@ -5,7 +5,7 @@ namespace Astrolabe.Core.Routing.Abstraction;
 /// <summary>
 /// Определяет опции выполнения маршрута.
 /// </summary>
-internal interface IContextInfo
+public interface IContextInfo
 {
     /// <summary>
     /// Предоставляет ключ контекста выполнения маршрута.

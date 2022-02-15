@@ -2,5 +2,5 @@
 
 public interface IRouteExecutionContextProvider
 {
-    IRouteExecutionContext GetCurrentContext(string contextKey);
+    IRouteExecutionContext GetCurrentContext(IContextInfo info);
 }

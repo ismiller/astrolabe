@@ -15,5 +15,5 @@ public interface IRouteExecutionContext
     /// <param name="viewType">Тип представления.</param>
     /// <param name="container">Модель представления.</param>
     /// <returns><see langword="true"/> - если установка выполнена успешно.</returns>
-    bool TryExecute(Type viewType, IViewModelContainer container, IFrameOptions options);
+    bool TryExecute(Type viewType, IViewModelContainer container);
 }

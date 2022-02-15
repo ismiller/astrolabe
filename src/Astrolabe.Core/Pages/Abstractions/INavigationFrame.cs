@@ -20,5 +20,5 @@ public interface INavigationFrame
     /// <param name="container">Сонтейнер управляющего содержимого представления.</param>
     /// <param name="options">Опции навигации.</param>
     /// <returns><see langword="true"/> - если нафигация выполнена успешно.</returns>
-    bool NavigateToType(Type viewType, IViewModelContainer container, object options);
+    bool NavigateToType(Type viewType, IViewModelContainer container, IFrameOptions options);
 }

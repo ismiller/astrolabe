@@ -14,6 +14,7 @@ internal sealed class RouteExecutionContext : IRouteExecutionContext
     #region Private Fields
 
     private readonly INavigationFrame _frame;
+    private readonly IFrameOptions _options;
 
     #endregion Private Fields
 
@@ -23,8 +24,10 @@ internal sealed class RouteExecutionContext : IRouteExecutionContext
     /// Создает экземпляр <see cref="RouteExecutionContext"/>.
     /// </summary>
     /// <param name="frame">Экземпляр <see cref="INavigationFrame"/> в рамках которого производится навигация.</param>
-    public RouteExecutionContext(INavigationFrame frame)
+    /// <param name="options"></param>
+    public RouteExecutionContext(INavigationFrame frame, IFrameOptions options)
     {
+        _options = Security.NotNull(options, nameof(options));
         _frame = Security.NotNull(frame, nameof(frame));
     }
 
@@ -33,10 +36,9 @@ internal sealed class RouteExecutionContext : IRouteExecutionContext
     #region Public Methods
 
     /// <inheritdoc />
-    public bool TryExecute(Type viewType, IViewModelContainer container, IFrameOptions options)
+    public bool TryExecute(Type viewType, IViewModelContainer container)
     {
-        _ = Security.NotNull(options, nameof(options));
-        return _frame.NavigateToType(viewType, container, options);
+        return _frame.NavigateToType(viewType, container, _options);
     }
 
     #endregion Public Methods
