@@ -1,6 +1,6 @@
 ﻿using System;
-using Astrolabe.Core.Pages.Abstractions;
-using Astrolabe.Core.Routing.Abstraction;
+using Astrolabe.Core.Components.Abstractions;
+using Astrolabe.Core.Routing.Schemes.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Astrolabe.Core;
@@ -17,7 +17,7 @@ internal interface INavigatorBuilder
     IAstrolabe Build();
 
     /// <summary>
-    /// Выполняет регестрацию маршрутов навигации.
+    /// Выполняет регистрацию маршрутов навигации.
     /// </summary>
     /// <param name="setAction">Делегат установки маршрутов.</param>
     /// <returns>Экземпляр билдера сервиса навигации.</returns>

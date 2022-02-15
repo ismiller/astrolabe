@@ -1,6 +1,6 @@
-﻿using Astrolabe.Core.Routing.Abstraction;
+﻿using Astrolabe.Core.Routing.Routes.Abstractions;
 
-namespace Astrolabe.Core.Routing;
+namespace Astrolabe.Core.Routing.Routes;
 
 /// <summary>
 /// Предоставляет результат составления маршрута.
@@ -34,7 +34,7 @@ internal sealed class BuildRouteResult : IBuildRouteResult
     #region Public Methods
 
     /// <summary>
-    /// Прдоставляет экземпляр <see cref="IRoutingResult"/> неудачного выполнения маршурта.
+    /// Предоставляет экземпляр <see cref="IRoutingResult"/> неудачного выполнения маршурта.
     /// </summary>
     /// <param name="message">Сообщение ошибки получения маршрута.</param>
     /// <returns>Результат получения маршрута.</returns>
@@ -44,7 +44,7 @@ internal sealed class BuildRouteResult : IBuildRouteResult
     }
 
     /// <summary>
-    /// Прдоставляет экземпляр <see cref="IRoutingResult"/> успешного получения маршрута.
+    /// Предоставляет экземпляр <see cref="IRoutingResult"/> успешного получения маршрута.
     /// </summary>
     /// <param name="route">Полученный маршрут.</param>
     /// <param name="message">Сообщение получения маршрута.</param>

@@ -1,13 +1,12 @@
 ﻿using System;
-using Astrolabe.Core.Pages.Abstractions;
 using Astrolabe.Core.ViewModels.Abstractions;
 
-namespace Astrolabe.Core.Routing.Abstraction;
-
+namespace Astrolabe.Core.Routing.Context.Abstraction;
+    
 /// <summary>
 /// Определяет функционал контекста навигации.
 /// </summary>
-public interface IRouteExecutionContext
+public interface IRouteContext
 {
     /// <summary>
     /// Пробует выполнить установку типа представления в контекст навигации.

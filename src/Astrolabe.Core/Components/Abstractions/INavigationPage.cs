@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Astrolabe.Core.Pages.Abstractions;
+namespace Astrolabe.Core.Components.Abstractions;
 
 /// <summary>
 /// Определяет визуальный компонент отображения контента.

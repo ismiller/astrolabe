@@ -1,25 +1,26 @@
 ﻿using System;
-using Astrolabe.Core.Abstractions;
-using Astrolabe.Core.Helpers;
-using Astrolabe.Core.Routing.Abstraction;
 using Astrolabe.Core.Routing.Schemes;
+using Astrolabe.Core.Routing.Schemes.Abstractions;
+using Astrolabe.Core.Utilities.Security;
 
 namespace Astrolabe.Core;
 
 public class NavigationBuilderExperimental
 {
-    public static NavigationBuilderExperimental Builder => new();
+    public static NavigationBuilderExperimental DefaultBuilder => new();
+    private readonly ISchemeBuilder _schemeBuilder;
 
     private NavigationBuilderExperimental()
-    { }
+    {
+        _schemeBuilder = new SchemeBuilder();
+        
+    }
 
     public NavigationBuilderExperimental RegisterRoutes(Action<ISchemeBuilder> action)
     {
-        ISchemeBuilder schemeBuilder = new SchemeBuilder();
-        Security.NotNull(action, nameof(action)).Invoke(schemeBuilder);
-        var buildInstance = schemeBuilder as IBuild<ISchemeBuilder>;
-        _ = buildInstance.Build();
-
+        Security.ProtectFrom.Null(action, nameof(action)).Invoke(_schemeBuilder);
         return this;
     }
+
+    public NavigationBuilderExperimental 
 }

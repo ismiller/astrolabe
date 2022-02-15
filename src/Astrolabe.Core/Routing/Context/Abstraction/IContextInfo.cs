@@ -1,6 +1,6 @@
-﻿using Astrolabe.Core.Pages.Abstractions;
+﻿using Astrolabe.Core.Components.Abstractions;
 
-namespace Astrolabe.Core.Routing.Abstraction;
+namespace Astrolabe.Core.Routing.Context.Abstraction;
 
 /// <summary>
 /// Определяет опции выполнения маршрута.

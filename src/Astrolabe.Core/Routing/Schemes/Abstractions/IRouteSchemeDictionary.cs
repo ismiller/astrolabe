@@ -1,7 +1,8 @@
-﻿using Astrolabe.Core.Pages.Abstractions;
+﻿using Astrolabe.Core.Components.Abstractions;
+using Astrolabe.Core.Routing.Context.Abstraction;
 using Astrolabe.Core.ViewModels.Abstractions;
 
-namespace Astrolabe.Core.Routing.Abstraction;
+namespace Astrolabe.Core.Routing.Schemes.Abstractions;
 
 /// <summary>
 /// Определяет функционал словаря маршрутов.
@@ -9,7 +10,7 @@ namespace Astrolabe.Core.Routing.Abstraction;
 internal interface IRouteSchemeDictionary
 {
     /// <summary>
-    /// Пытается извлечь из словаря схему маршурта.
+    /// Пытается извлечь из словаря схему маршрута.
     /// </summary>
     /// <typeparam name="TNavigatable">Тип модели представления, для которой извлекается схема.</typeparam>
     /// <param name="scheme">Извлеченный маршрут. <see langword="null" /> если маршрут не найден.</param>

@@ -1,6 +1,6 @@
 ﻿using Astrolabe.Core.ViewModels.Abstractions;
 
-namespace Astrolabe.Core.Routing.Abstraction;
+namespace Astrolabe.Core.Routing.Routes.Abstractions;
 
 /// <summary>
 /// Предоставляет результат выполнения маршрута.

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Astrolabe.Core.Abstractions;
-using Astrolabe.Core.Pages.Abstractions;
-using Astrolabe.Core.Routing.Abstraction;
+using Astrolabe.Core.Components.Abstractions;
+using Astrolabe.Core.Routing.Schemes.Abstractions;
 using Astrolabe.Core.ViewModels.Abstractions;
 
 namespace Astrolabe.Core.Routing.Schemes;
@@ -16,9 +16,7 @@ internal class SchemeBuilder : ISchemeBuilder, IBuild<IRouteSchemeDictionary>
         _schemeDictionary = new RouteSchemeDictionary();
     }
 
-    public ISchemeBlank AddScheme<TNavigatable, TView>()
-        where TNavigatable : INavigatable
-        where TView : INavigationFrame, new()
+    public ISchemeBlank AddScheme()
     {
         ISchemeBlank blank = new SchemeBlank();
         _blanks.Add(blank);

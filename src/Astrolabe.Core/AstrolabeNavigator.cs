@@ -1,9 +1,9 @@
 ﻿using System;
-using Astrolabe.Core.Helpers;
 using Astrolabe.Core.Navigating;
 using Astrolabe.Core.Navigating.Abstraction;
-using Astrolabe.Core.Pages.Abstractions;
-using Astrolabe.Core.Routing.Abstraction;
+using Astrolabe.Core.Routing.Context.Abstraction;
+using Astrolabe.Core.Routing.Routes.Abstractions;
+using Astrolabe.Core.Utilities.Security;
 using Astrolabe.Core.ViewModels.Abstractions;
 
 namespace Astrolabe.Core;
@@ -15,7 +15,7 @@ internal sealed class AstrolabeNavigator : IAstrolabe
 {
     #region Private Fields
 
-    private readonly IRouteExecutionContext _context;
+    private readonly IRouteContext _context;
     private readonly INavigationStack<IRoute> _navigationStack;
     private readonly IRouter _router;
 
@@ -35,10 +35,10 @@ internal sealed class AstrolabeNavigator : IAstrolabe
     /// </summary>
     /// <param name="context">Контекст навигации.</param>
     /// <param name="router">Маршрутизатор.</param>
-    public AstrolabeNavigator(IRouteExecutionContext context, IRouter router)
+    public AstrolabeNavigator(IRouteContext context, IRouter router)
     {
-        _context = Security.NotNull(context, nameof(context));
-        _router = Security.NotNull(router, nameof(router));
+        _context = Security.ProtectFrom.Null(context, nameof(context));
+        _router = Security.ProtectFrom.Null(router, nameof(router));
         _navigationStack = new NavigationStack<IRoute>();
     }
 

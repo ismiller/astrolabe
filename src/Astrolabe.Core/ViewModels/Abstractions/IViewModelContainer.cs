@@ -1,7 +1,7 @@
 ﻿namespace Astrolabe.Core.ViewModels.Abstractions;
 
 /// <summary>
-/// Предоставляет контейнер для экземпляря мрдели представления.
+/// Предоставляет контейнер для экземпляря модели представления.
 /// </summary>
 public interface IViewModelContainer
 {

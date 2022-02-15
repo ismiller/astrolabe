@@ -1,6 +1,7 @@
 ﻿using System;
-using Astrolabe.Core.Helpers;
-using Astrolabe.Core.Routing.Abstraction;
+using Astrolabe.Core.Routing.Context.Abstraction;
+using Astrolabe.Core.Routing.Schemes.Abstractions;
+using Astrolabe.Core.Utilities.Security;
 
 namespace Astrolabe.Core.Routing.Schemes;
 
@@ -20,9 +21,9 @@ internal sealed class RouteScheme : IRouteScheme
 
     public RouteScheme(Type viewModelType, Type viewType, IContextInfo info)
     {
-        ViewModelType = Security.NotNull(viewModelType, nameof(viewModelType));
-        ViewType = Security.NotNull(viewType, nameof(viewType));
-        ContextInfo = Security.NotNull(info, nameof(info));
+        ViewModelType = Security.ProtectFrom.Null(viewModelType, nameof(viewModelType));
+        ViewType = Security.ProtectFrom.Null(viewType, nameof(viewType));
+        ContextInfo = Security.ProtectFrom.Null(info, nameof(info));
     }
 
     #endregion Public Properties

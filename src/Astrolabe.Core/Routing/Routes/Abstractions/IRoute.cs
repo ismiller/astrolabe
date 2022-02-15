@@ -1,6 +1,6 @@
-﻿using Astrolabe.Core.Pages.Abstractions;
+﻿using Astrolabe.Core.Routing.Context.Abstraction;
 
-namespace Astrolabe.Core.Routing.Abstraction;
+namespace Astrolabe.Core.Routing.Routes.Abstractions;
 
 /// <summary>
 /// Определяет функционал управления маршрутом.
@@ -12,5 +12,5 @@ public interface IRoute
     /// </summary>
     /// <param name="context">Контекст навигации.</param>
     /// <returns>Возвращает объект <see cref="IRoutingResult"/> предоставляющий результат выполнения маршрута.</returns>
-    IRoutingResult TryExecute(IRouteExecutionContext context);
+    IRoutingResult TryExecute(IRouteContext context);
 }

@@ -1,7 +1,7 @@
-﻿using Astrolabe.Core.Routing.Abstraction;
+﻿using Astrolabe.Core.Routing.Routes.Abstractions;
 using Astrolabe.Core.ViewModels.Abstractions;
 
-namespace Astrolabe.Core.Routing;
+namespace Astrolabe.Core.Routing.Routes;
 
 /// <inheritdoc />
 internal sealed class RoutingResult : IRoutingResult

@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
-using Astrolabe.Core.Helpers;
-using Astrolabe.Core.Routing.Abstraction;
+using Astrolabe.Core.Routing.Context.Abstraction;
+using Astrolabe.Core.Routing.Routes.Abstractions;
+using Astrolabe.Core.Routing.Schemes.Abstractions;
+using Astrolabe.Core.Utilities.Security;
 using Astrolabe.Core.ViewModels.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Astrolabe.Core.Routing;
+namespace Astrolabe.Core.Routing.Routes;
 
 /// <summary>
 /// Предоставляет функционал управления маршрута.
@@ -17,7 +19,7 @@ internal sealed class Router : IRouter
     private IServiceProvider _provider;
     private readonly IServiceCollection _serviceCollection;
     private readonly IRouteSchemeDictionary _routeSchemeDictionary;
-    private readonly IRouteExecutionContextProvider _contextProvider;
+    private readonly IRouteContextProvider _contextProvider;
 
     #endregion Private Fields
 
@@ -28,11 +30,11 @@ internal sealed class Router : IRouter
     /// </summary>
     /// <param name="routeSchemeDictionary">Словарь маршрутов.</param>
     /// <param name="collection">Коллекция сервисов.</param>
-    public Router(IRouteSchemeDictionary routeSchemeDictionary, IServiceCollection collection, IRouteExecutionContextProvider contextProvider)
+    public Router(IRouteSchemeDictionary routeSchemeDictionary, IServiceCollection collection, IRouteContextProvider contextProvider)
     {
-        _contextProvider = Security.NotNull(contextProvider, nameof(contextProvider));
-        _routeSchemeDictionary = Security.NotNull(routeSchemeDictionary, nameof(routeSchemeDictionary));
-        _serviceCollection = Security.NotNull(collection, nameof(collection));
+        _contextProvider = Security.ProtectFrom.Null(contextProvider, nameof(contextProvider));
+        _routeSchemeDictionary = Security.ProtectFrom.Null(routeSchemeDictionary, nameof(routeSchemeDictionary));
+        _serviceCollection = Security.ProtectFrom.Null(collection, nameof(collection));
     }
 
     #endregion Public Constructors
@@ -44,7 +46,7 @@ internal sealed class Router : IRouter
     {
         if (_routeSchemeDictionary.TryGetScheme<T>(out IRouteScheme scheme))
         {
-            IRouteExecutionContext context = _contextProvider.GetCurrentContext(scheme.ContextInfo);
+            IRouteContext context = _contextProvider.GetContext(scheme.ContextInfo);
 
             if (context is null && scheme.ContextInfo.IsExecuteOnlySpecifiedContext)
             {

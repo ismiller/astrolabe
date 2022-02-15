@@ -1,7 +1,7 @@
-﻿using Astrolabe.Core.Pages.Abstractions;
-using Astrolabe.Core.Routing.Abstraction;
+﻿using Astrolabe.Core.Components.Abstractions;
+using Astrolabe.Core.Routing.Context.Abstraction;
 
-namespace Astrolabe.Core.Routing.Schemes;
+namespace Astrolabe.Core.Routing.Context;
 
 /// <inheritdoc />
 internal class ContextInfo : IContextInfo

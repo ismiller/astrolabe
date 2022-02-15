@@ -1,4 +1,4 @@
-﻿namespace Astrolabe.Core.Pages.Abstractions;
+﻿namespace Astrolabe.Core.Components.Abstractions;
 
 /// <summary>
 /// Определяет контейнер опций навигации фрейма (маркерный интерфейс).

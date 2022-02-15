@@ -1,7 +1,7 @@
-﻿using Astrolabe.Core.Pages.Abstractions;
+﻿using Astrolabe.Core.Components.Abstractions;
 using Astrolabe.Core.ViewModels.Abstractions;
 
-namespace Astrolabe.Core.Routing.Abstraction;
+namespace Astrolabe.Core.Routing.Schemes.Abstractions;
 
 /// <summary>
 /// Определяет методы настройки схемы маршрута.
@@ -30,7 +30,7 @@ public interface ISchemeBlank
 
     ISchemeBlank AttachNavigationStackRule();
 
-    ISchemeBlank SetView<T>() where T : INavigationPage;
+    ISchemeBlank SetView<T>();
 
-    ISchemeBlank SetViewModel<T>() where T : INavigatable;
+    ISchemeBlank SetViewModel<T>();
 }

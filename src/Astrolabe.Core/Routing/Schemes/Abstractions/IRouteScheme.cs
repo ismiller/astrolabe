@@ -1,6 +1,7 @@
 ﻿using System;
+using Astrolabe.Core.Routing.Context.Abstraction;
 
-namespace Astrolabe.Core.Routing.Abstraction;
+namespace Astrolabe.Core.Routing.Schemes.Abstractions;
 
 /// <summary>
 /// Представляет схему маршрута.

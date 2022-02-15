@@ -1,4 +1,4 @@
-﻿namespace Astrolabe.Core.Routing.Abstraction;
+﻿namespace Astrolabe.Core.Routing.Routes.Abstractions;
 
 /// <summary>
 /// Определяет результат составления маршрута.

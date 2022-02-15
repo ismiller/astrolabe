@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using Astrolabe.Core.Pages.Abstractions;
-using Astrolabe.Core.Routing.Abstraction;
+using Astrolabe.Core.Components.Abstractions;
+using Astrolabe.Core.Routing.Context.Abstraction;
+using Astrolabe.Core.Routing.Schemes.Abstractions;
 using Astrolabe.Core.ViewModels.Abstractions;
 
 namespace Astrolabe.Core.Routing.Schemes;

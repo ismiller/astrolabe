@@ -1,15 +1,15 @@
 ﻿using System;
-using Astrolabe.Core.Helpers;
-using Astrolabe.Core.Pages.Abstractions;
-using Astrolabe.Core.Routing.Abstraction;
+using Astrolabe.Core.Components.Abstractions;
+using Astrolabe.Core.Routing.Context.Abstraction;
+using Astrolabe.Core.Utilities.Security;
 using Astrolabe.Core.ViewModels.Abstractions;
 
-namespace Astrolabe.Core.Routing;
+namespace Astrolabe.Core.Routing.Context;
 
 /// <summary>
 /// Предоставляет функционал контекста навигации.
 /// </summary>
-internal sealed class RouteExecutionContext : IRouteExecutionContext
+internal sealed class RouteContext : IRouteContext
 {
     #region Private Fields
 
@@ -21,14 +21,14 @@ internal sealed class RouteExecutionContext : IRouteExecutionContext
     #region Public Constructors
 
     /// <summary>
-    /// Создает экземпляр <see cref="RouteExecutionContext"/>.
+    /// Создает экземпляр <see cref="RouteContext"/>.
     /// </summary>
     /// <param name="frame">Экземпляр <see cref="INavigationFrame"/> в рамках которого производится навигация.</param>
     /// <param name="options"></param>
-    public RouteExecutionContext(INavigationFrame frame, IFrameOptions options)
+    public RouteContext(INavigationFrame frame, IFrameOptions options)
     {
-        _options = Security.NotNull(options, nameof(options));
-        _frame = Security.NotNull(frame, nameof(frame));
+        _options = Security.ProtectFrom.Null(options, nameof(options));
+        _frame = Security.ProtectFrom.Null(frame, nameof(frame));
     }
 
     #endregion Public Constructors
@@ -38,7 +38,7 @@ internal sealed class RouteExecutionContext : IRouteExecutionContext
     /// <inheritdoc />
     public bool TryExecute(Type viewType, IViewModelContainer container)
     {
-        return _frame.NavigateToType(viewType, container, _options);
+        return _frame.ExecuteNavigation(viewType, container, _options);
     }
 
     #endregion Public Methods

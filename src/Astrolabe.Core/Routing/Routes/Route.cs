@@ -1,11 +1,11 @@
 ﻿using System;
-using Astrolabe.Core.Helpers;
-using Astrolabe.Core.Pages.Abstractions;
-using Astrolabe.Core.Routing.Abstraction;
+using Astrolabe.Core.Routing.Context.Abstraction;
+using Astrolabe.Core.Routing.Routes.Abstractions;
+using Astrolabe.Core.Utilities.Security;
 using Astrolabe.Core.ViewModels;
 using Astrolabe.Core.ViewModels.Abstractions;
 
-namespace Astrolabe.Core.Routing;
+namespace Astrolabe.Core.Routing.Routes;
 
 /// <summary>
 /// Предоставляет функционал управления маршрутом.
@@ -28,7 +28,7 @@ internal sealed class Route : IRoute
     /// <param name="viewType">Тип представления.</param>
     public Route(INavigatable viewModel, Type viewType)
     {
-        _viewType = Security.NotNull(viewType, nameof(viewType));
+        _viewType = Security.ProtectFrom.Null(viewType, nameof(viewType));
         _viewModelContainer = new ViewModelContainer(viewModel);
     }
 
@@ -37,7 +37,7 @@ internal sealed class Route : IRoute
     #region Public Methods
 
     /// <inheritdoc />
-    public IRoutingResult TryExecute(IRouteExecutionContext context)
+    public IRoutingResult TryExecute(IRouteContext context)
     {
         bool result = context.TryExecute(_viewType, _viewModelContainer);
         if (result)

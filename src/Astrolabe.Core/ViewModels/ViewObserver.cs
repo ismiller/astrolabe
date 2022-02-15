@@ -1,5 +1,5 @@
 ﻿using System;
-using Astrolabe.Core.Helpers;
+using Astrolabe.Core.Utilities.Security;
 using Astrolabe.Core.ViewModels.Abstractions;
 
 namespace Astrolabe.Core.ViewModels;
@@ -21,32 +21,32 @@ public sealed class ViewObserver : IViewObserver, IViewObserverCaller
 
     public void ListenViewCreated(Action callback)
     {
-        _viewCreatedCallback = Security.NotNull(callback, nameof(callback));
+        _viewCreatedCallback = Security.ProtectFrom.Null(callback, nameof(callback));
     }
 
     public void ListenViewLeave(Action callback)
     {
-        _viewLeaveCallback = Security.NotNull(callback, nameof(callback));
+        _viewLeaveCallback = Security.ProtectFrom.Null(callback, nameof(callback));
     }
 
     public void ListenViewLeft(Action callback)
     {
-        _viewLeftCallback = Security.NotNull(callback, nameof(callback));
+        _viewLeftCallback = Security.ProtectFrom.Null(callback, nameof(callback));
     }
 
     public void ListenViewLoaded(Action callback)
     {
-        _viewLoadedCallback = Security.NotNull(callback, nameof(callback));
+        _viewLoadedCallback = Security.ProtectFrom.Null(callback, nameof(callback));
     }
 
     public void ListenViewLoading(Action callback)
     {
-        _viewLoadingCallback = Security.NotNull(callback, nameof(callback));
+        _viewLoadingCallback = Security.ProtectFrom.Null(callback, nameof(callback));
     }
 
     public void ListenViewUnloaded(Action callback)
     {
-        _viewUnloadedCallback = Security.NotNull(callback, nameof(callback));
+        _viewUnloadedCallback = Security.ProtectFrom.Null(callback, nameof(callback));
     }
 
     #endregion Public Methods
