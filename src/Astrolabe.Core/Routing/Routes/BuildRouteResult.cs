@@ -1,4 +1,5 @@
 ﻿using Astrolabe.Core.Routing.Routes.Abstractions;
+using Astrolabe.Core.Utilities.Security;
 
 namespace Astrolabe.Core.Routing.Routes;
 
@@ -16,17 +17,23 @@ internal sealed class BuildRouteResult : IBuildRouteResult
     public string Message { get; }
 
     /// <inheritdoc />
-    public IRoute Route { get; }
+    public IRouteMover Mover { get; }
 
     #endregion Public Properties
 
     #region Private Constructors
 
-    private BuildRouteResult(bool isSuccess, string message, IRoute route = default)
+    private BuildRouteResult(bool isSuccess, string message, IRouteMover routeMover)
     {
         IsSuccess = isSuccess;
         Message = message;
-        Route = route;
+        Mover = Security.ProtectFrom.Null(routeMover, nameof(routeMover));
+    }
+
+    private BuildRouteResult(bool isSuccess, string message)
+    {
+        IsSuccess = isSuccess;
+        Message = message;
     }
 
     #endregion Private Constructors
@@ -46,12 +53,12 @@ internal sealed class BuildRouteResult : IBuildRouteResult
     /// <summary>
     /// Предоставляет экземпляр <see cref="IRoutingResult"/> успешного получения маршрута.
     /// </summary>
-    /// <param name="route">Полученный маршрут.</param>
+    /// <param name="mover">исполнитель маршрута.</param>
     /// <param name="message">Сообщение получения маршрута.</param>
     /// <returns>Результат получения маршрута.</returns>
-    public static IBuildRouteResult Succeeded(IRoute route, string message = default)
+    public static IBuildRouteResult Succeeded(IRouteMover mover, string message = default)
     {
-        return new BuildRouteResult(true, message, route);
+        return new BuildRouteResult(true, message, mover);
     }
 
     #endregion Public Methods

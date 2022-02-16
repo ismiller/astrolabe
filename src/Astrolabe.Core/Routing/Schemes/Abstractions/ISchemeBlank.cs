@@ -33,4 +33,6 @@ public interface ISchemeBlank
     ISchemeBlank SetView<T>();
 
     ISchemeBlank SetViewModel<T>();
+
+    ISchemeBlank AsRoot();
 }

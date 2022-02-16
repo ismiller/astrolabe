@@ -19,11 +19,22 @@ internal sealed class RouteScheme : IRouteScheme
     /// <inheritdoc />
     public IContextInfo ContextInfo { get; }
 
-    public RouteScheme(Type viewModelType, Type viewType, IContextInfo info)
+    /// <inheritdoc />
+    public bool IsRoot { get; }
+
+    /// <summary>
+    /// Инициализирует новый экземпляр <see cref="RouteScheme"/>.
+    /// </summary>
+    /// <param name="viewModelType">Тип модели представления.</param>
+    /// <param name="viewType">Тип визуального представления.</param>
+    /// <param name="info">Информация о контексте навигации.</param>
+    /// <param name="isRoot">Флаг, указывающий, является ли маршрут корневым.</param>
+    public RouteScheme(Type viewModelType, Type viewType, IContextInfo info, bool isRoot)
     {
         ViewModelType = Security.ProtectFrom.Null(viewModelType, nameof(viewModelType));
         ViewType = Security.ProtectFrom.Null(viewType, nameof(viewType));
         ContextInfo = Security.ProtectFrom.Null(info, nameof(info));
+        IsRoot = isRoot;
     }
 
     #endregion Public Properties

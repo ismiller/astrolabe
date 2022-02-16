@@ -1,19 +1,18 @@
 ﻿using System.Collections.Generic;
 using Astrolabe.Core.Abstractions;
-using Astrolabe.Core.Components.Abstractions;
 using Astrolabe.Core.Routing.Schemes.Abstractions;
-using Astrolabe.Core.ViewModels.Abstractions;
 
 namespace Astrolabe.Core.Routing.Schemes;
 
-internal class SchemeBuilder : ISchemeBuilder, IBuild<IRouteSchemeDictionary>
+internal class SchemeBuilder : ISchemeBuilder, IBuild<IRouteSchemeDictionary<IRouteScheme>>
 {
-    private readonly IRouteSchemeDictionary _schemeDictionary;
+    private readonly IRouteSchemeDictionary<IRouteScheme> _schemeDictionary;
     private readonly List<ISchemeBlank> _blanks;
 
     public SchemeBuilder()
     {
         _schemeDictionary = new RouteSchemeDictionary();
+        _blanks = new List<ISchemeBlank>();
     }
 
     public ISchemeBlank AddScheme()
@@ -24,7 +23,7 @@ internal class SchemeBuilder : ISchemeBuilder, IBuild<IRouteSchemeDictionary>
         return blank;
     }
 
-    public IRouteSchemeDictionary Build()
+    public IRouteSchemeDictionary<IRouteScheme> Build()
     {
         foreach (ISchemeBlank blank in _blanks)
         {

@@ -1,18 +1,18 @@
-﻿using Astrolabe.Core.ViewModels.Abstractions;
+﻿using System;
 
 namespace Astrolabe.Core.Routing.Routes.Abstractions;
 
 /// <summary>
 /// Определяет функционал управления маршрутами.
 /// </summary>
-public interface IRouter
+internal interface IRouter
 {
     /// <summary>
     /// Предоставляет маршрут навигации для требуемой модели представления.
     /// </summary>
-    /// <typeparam name="TNavigatable">Тип модели представления.</typeparam>
+    /// <param name="viewModelType"></param>
     /// <returns>Объект маршрута - <see cref="IRoute"/>.</returns>
-    IBuildRouteResult GetRequiredRoute<TNavigatable>() where TNavigatable : INavigatable;
+    IBuildRouteResult GetRequiredRoute(Type viewModelType);
 
     /// <summary>
     /// Выполняет активацию.

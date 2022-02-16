@@ -1,7 +1,7 @@
 ﻿using System;
+using Astrolabe.Core.Abstractions;
 using Astrolabe.Core.Navigating;
 using Astrolabe.Core.Navigating.Abstraction;
-using Astrolabe.Core.Routing.Context.Abstraction;
 using Astrolabe.Core.Routing.Routes.Abstractions;
 using Astrolabe.Core.Utilities.Security;
 using Astrolabe.Core.ViewModels.Abstractions;
@@ -15,8 +15,7 @@ internal sealed class AstrolabeNavigator : IAstrolabe
 {
     #region Private Fields
 
-    private readonly IRouteContext _context;
-    private readonly INavigationStack<IRoute> _navigationStack;
+    private readonly INavigationStack<IRouteMover> _navigationStack;
     private readonly IRouter _router;
 
     #endregion Private Fields
@@ -33,13 +32,11 @@ internal sealed class AstrolabeNavigator : IAstrolabe
     /// <summary>
     /// Создает экземпляр <see cref="AstrolabeNavigator"/>.
     /// </summary>
-    /// <param name="context">Контекст навигации.</param>
     /// <param name="router">Маршрутизатор.</param>
-    public AstrolabeNavigator(IRouteContext context, IRouter router)
+    public AstrolabeNavigator(IRouter router)
     {
-        _context = Security.ProtectFrom.Null(context, nameof(context));
         _router = Security.ProtectFrom.Null(router, nameof(router));
-        _navigationStack = new NavigationStack<IRoute>();
+        _navigationStack = new NavigationStack<IRouteMover>();
     }
 
     #endregion Public Constructors
@@ -51,17 +48,17 @@ internal sealed class AstrolabeNavigator : IAstrolabe
     {
         if (_navigationStack.Any())
         {
-            _ = _navigationStack.TryGetSuspend(out IRoute lastRoute);
+            _ = _navigationStack.TryGetSuspend(out IRouteMover lastRouteMover);
 
-            if (_navigationStack.TryPop(out IRoute route))
+            if (_navigationStack.TryPop(out IRouteMover mover))
             {
-                IRoutingResult result = route.TryExecute(_context);
+                IRoutingResult result = mover.Move();
 
                 if (result.IsSuccess)
                 {
                     result.ApplyNavigateArgs(navigationArgs);
 
-                    ApplyNavigateOptions(route, options);
+                    ApplyNavigateOptions(mover, options);
 
                     Navigated?.Invoke(this, EventArgs.Empty);
                 }
@@ -74,9 +71,9 @@ internal sealed class AstrolabeNavigator : IAstrolabe
     {
         if (_navigationStack.Any())
         {
-            if (_navigationStack.TryPop(out IRoute route))
+            if (_navigationStack.TryPop(out IRouteMover mover))
             {
-                IRoutingResult result = route.TryExecute(_context);
+                IRoutingResult result = mover.Move();
 
                 if (result.IsSuccess)
                 {
@@ -88,31 +85,31 @@ internal sealed class AstrolabeNavigator : IAstrolabe
     }
 
     /// <inheritdoc />
-    public void NavigateTo<TViewModel>(INavigationArgs navigationArgs, INavigationOptions options) where TViewModel : INavigatable
+    public void NavigateTo(Type viewModelType, INavigationArgs navigationArgs, INavigationOptions options)
     {
-        IBuildRouteResult buildRoute = _router.GetRequiredRoute<TViewModel>();
+        IBuildRouteResult buildRoute = _router.GetRequiredRoute(viewModelType);
         if (buildRoute.IsSuccess)
         {
-            IRoutingResult routingResult = buildRoute.Route.TryExecute(_context);
+            IRoutingResult routingResult = buildRoute.Mover.Move();
             if (routingResult.IsSuccess)
             {
                 routingResult.ApplyNavigateArgs(navigationArgs);
-                ApplyNavigateOptions(buildRoute.Route, options);
+                ApplyNavigateOptions(buildRoute.Mover, options);
                 Navigated?.Invoke(this, EventArgs.Empty);
             }
         }
     }
 
     /// <inheritdoc />
-    public void NavigateTo<TViewModel>(INavigationArgs navigationArgs) where TViewModel : INavigatable
+    public void NavigateTo(Type viewModelType, INavigationArgs navigationArgs)
     {
-        IBuildRouteResult buildRoute = _router.GetRequiredRoute<TViewModel>();
+        IBuildRouteResult buildRoute = _router.GetRequiredRoute(viewModelType);
         if (buildRoute.IsSuccess)
         {
-            IRoutingResult routingResult = buildRoute.Route.TryExecute(_context);
+            IRoutingResult routingResult = buildRoute.Mover.Move();
             if (routingResult.IsSuccess)
             {
-                _navigationStack.Push(buildRoute.Route);
+                _navigationStack.Push(buildRoute.Mover);
                 routingResult.ApplyNavigateArgs(navigationArgs);
                 Navigated?.Invoke(this, EventArgs.Empty);
             }
@@ -123,13 +120,13 @@ internal sealed class AstrolabeNavigator : IAstrolabe
 
     #region Private Methods
 
-    private void ApplyNavigateOptions(IRoute currentRoute, INavigationOptions options)
+    private void ApplyNavigateOptions(IRouteMover currentRouteMover, INavigationOptions options)
     {
         if (options is not null)
         {
             if (!options.IsIgnoreStack)
             {
-                _navigationStack.Push(currentRoute);
+                _navigationStack.Push(currentRouteMover);
             }
 
             if (options.IsResetStack)

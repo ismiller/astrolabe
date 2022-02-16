@@ -3,7 +3,7 @@
 /// <summary>
 /// Определяет результат составления маршрута.
 /// </summary>
-public interface IBuildRouteResult
+internal interface IBuildRouteResult
 {
     /// <summary>
     /// Предоставляет флаг, указывающий на успешное выполнение маршрута.
@@ -18,5 +18,5 @@ public interface IBuildRouteResult
     /// <summary>
     /// Предоставляет полученный маршрут.
     /// </summary>
-    IRoute Route { get; }
+    IRouteMover Mover { get; }
 }

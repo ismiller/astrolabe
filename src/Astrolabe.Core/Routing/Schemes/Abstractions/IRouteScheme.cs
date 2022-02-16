@@ -6,7 +6,7 @@ namespace Astrolabe.Core.Routing.Schemes.Abstractions;
 /// <summary>
 /// Представляет схему маршрута.
 /// </summary>
-internal interface IRouteScheme
+public interface IRouteScheme
 {
     /// <summary>
     /// Предоставляет тип модели представления.
@@ -22,4 +22,9 @@ internal interface IRouteScheme
     /// Предоставляет опции контекста выполнения маршрута.
     /// </summary>
     IContextInfo ContextInfo { get; }
+
+    /// <summary>
+    /// Предоставляет флаг, указывающий, что схема является корнем выполнения навигации.
+    /// </summary>
+    bool IsRoot { get; }
 }

@@ -1,10 +1,8 @@
-﻿using Astrolabe.Core;
+﻿using Astrolabe.AppSDK;
+using Astrolabe.AppSDK.Extensions;
+using Astrolabe.Core;
+using Astrolabe.Core.Routing.Context.Abstraction;
 using Microsoft.UI.Xaml;
-using Astrolabe.AppSDK.Navigating;
-using Microsoft.UI.Xaml.Media.Animation;
-
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
 
 namespace Test
 {
@@ -29,19 +27,12 @@ namespace Test
         /// <param name="args">Details about the launch request and process.</param>
         protected override void OnLaunched(LaunchActivatedEventArgs args)
         {
-            NavigationBuilderExperimental.DefaultBuilder.RegisterRoutes(sb =>
-            {
-                sb.AddScheme()
-                    .SetView<TestPage>()
-                    .SetViewModel<TestPageViewModel>()
-                    .AttachContext("root_frame")
-                    .AttachFrameOptions(
-                        new FrameOptions(
-                            new CommonNavigationTransitionInfo()));
-            });
-
-            //m_window = new MainWindow();
-            //m_window.Activate();
+            NavigationBuilder.DefaultBuilder
+                .TargetContextProvider<RouteContextProvider>()
+                .UseConfigure<Configure>()
+                .UseAppSdk()
+                .Build()
+                .Run();
         }
 
         private Window m_window;

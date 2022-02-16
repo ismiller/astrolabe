@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Astrolabe.Core.Components.Abstractions;
 using Astrolabe.Core.Routing.Context.Abstraction;
 using Astrolabe.Core.Routing.Schemes.Abstractions;
+using Astrolabe.Core.Utilities.Security;
 using Astrolabe.Core.ViewModels.Abstractions;
 
 namespace Astrolabe.Core.Routing.Schemes;
@@ -10,15 +12,16 @@ namespace Astrolabe.Core.Routing.Schemes;
 /// <summary>
 /// Предоставляет функционал словаря маршрутов.
 /// </summary>
-internal sealed class RouteSchemeDictionary : IRouteSchemeDictionary
+internal sealed class RouteSchemeDictionary : IRouteSchemeDictionary<IRouteScheme>
 {
+
     #region Private Fields
 
     private readonly Dictionary<string, IRouteScheme> _schemes;
 
     #endregion Private Fields
 
-    #region Public Methods
+    #region Public Constructors
 
     /// <summary>
     /// Создает экземпляр <see cref="RouteSchemeDictionary"/>.
@@ -28,18 +31,20 @@ internal sealed class RouteSchemeDictionary : IRouteSchemeDictionary
         _schemes = new Dictionary<string, IRouteScheme>();
     }
 
+    #endregion Public Constructors
+
+    #region Public Methods
+
     /// <inheritdoc />
-    public void RegisterScheme<TNavigatable, TView>(IContextInfo info)
-        where TNavigatable : INavigatable
-        where TView : INavigationFrame, new()
+    public IEnumerator<IRouteScheme> GetEnumerator()
     {
-        Type viewModelType = typeof(TNavigatable);
-        string key = viewModelType.FullName;
-        Type viewType = typeof(TView);
+        return _schemes.Values.GetEnumerator();
+    }
 
-        IRouteScheme scheme = new RouteScheme(viewModelType, viewType, info);
-
-        _schemes.Add(key, scheme);
+    /// <inheritdoc />
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return _schemes.Values.GetEnumerator();
     }
 
     public void RegisterScheme(IRouteScheme scheme)
@@ -49,10 +54,10 @@ internal sealed class RouteSchemeDictionary : IRouteSchemeDictionary
     }
 
     /// <inheritdoc />
-    public bool TryGetScheme<TNavigatable>(out IRouteScheme scheme) where TNavigatable : INavigatable
+    public bool TryGetScheme(Type viewModelType, out IRouteScheme scheme)
     {
         scheme = default;
-        Type viewModelType = typeof(TNavigatable);
+        Security.ProtectFrom.Null(viewModelType, nameof(viewModelType));
         string key = viewModelType.FullName;
         if (_schemes.TryGetValue(key, out IRouteScheme concreteScheme))
         {

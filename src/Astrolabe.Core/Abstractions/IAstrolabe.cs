@@ -2,7 +2,7 @@
 using Astrolabe.Core.Navigating.Abstraction;
 using Astrolabe.Core.ViewModels.Abstractions;
 
-namespace Astrolabe.Core;
+namespace Astrolabe.Core.Abstractions;
 
 /// <summary>
 /// Описывает функционал управления навигацией.
@@ -36,15 +36,15 @@ public interface IAstrolabe
     /// <remarks>
     /// Обработка опций навигации будут произведена после завершения навигации.
     /// </remarks>
-    /// <typeparam name="TViewModel">Тип модели представления на страницу которой производится навигация.</typeparam>
+    /// <param name="viewModelType"></param>
     /// <param name="navigationArgs">Аргументы навигации.</param>
     /// <param name="options">Опции навигации.</param>
-    void NavigateTo<TViewModel>(INavigationArgs navigationArgs, INavigationOptions options) where TViewModel : INavigatable;
+    void NavigateTo(Type viewModelType, INavigationArgs navigationArgs, INavigationOptions options);
 
     /// <summary>
     /// Выполняет навигацию на указанную страницу.
     /// </summary>
-    /// <typeparam name="TViewModel">Тип модели представления на страницу которой производится навигация.</typeparam>
+    /// <param name="viewModelType"></param>
     /// <param name="navigationArgs">Аргументы навигации.</param>
-    void NavigateTo<TViewModel>(INavigationArgs navigationArgs) where TViewModel : INavigatable;
+    void NavigateTo(Type viewModelType, INavigationArgs navigationArgs);
 }

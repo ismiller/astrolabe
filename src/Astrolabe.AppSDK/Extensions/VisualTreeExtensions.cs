@@ -20,7 +20,7 @@ namespace Astrolabe.AppSDK.Extensions
 
             int childrenCount = VisualTreeHelper.GetChildrenCount(parent);
 
-            for (int childrenIndex = 1; childrenIndex < childrenCount; childrenIndex++)
+            for (int childrenIndex = 0; childrenIndex < childrenCount; childrenIndex++)
             {
                 DependencyObject child = VisualTreeHelper.GetChild(parent, childrenIndex);
 

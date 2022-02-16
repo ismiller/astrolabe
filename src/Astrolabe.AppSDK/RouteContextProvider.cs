@@ -4,7 +4,6 @@ using Astrolabe.AppSDK.Controls;
 using Astrolabe.AppSDK.Extensions;
 using Astrolabe.Core.Components.Abstractions;
 using Astrolabe.Core.Routing.Context.Abstraction;
-using Microsoft.UI.Xaml;
 
 namespace Astrolabe.AppSDK;
 
@@ -19,11 +18,10 @@ public class RouteContextProvider : IRouteContextProvider
 
     public IRouteContext GetContext(IContextInfo info)
     {
-        AstrolabeFrame rootFrame = Window.Current.Content as AstrolabeFrame;
-        if (rootFrame is null)
+        if (AppSdkWindow.Current.Content is not AstrolabeFrame rootFrame)
         {
             rootFrame = new AstrolabeFrame();
-            Window.Current.Content = rootFrame;
+            AppSdkWindow.Current.Content = rootFrame;
         }
 
         INavigationFrame frame = rootFrame.FindChildren<AstrolabeFrame>()

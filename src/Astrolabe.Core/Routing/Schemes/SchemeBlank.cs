@@ -5,7 +5,6 @@ using Astrolabe.Core.Routing.Context;
 using Astrolabe.Core.Routing.Context.Abstraction;
 using Astrolabe.Core.Routing.Schemes.Abstractions;
 using Astrolabe.Core.Utilities.Security;
-using Astrolabe.Core.ViewModels.Abstractions;
 
 namespace Astrolabe.Core.Routing.Schemes;
 
@@ -16,6 +15,7 @@ internal class SchemeBlank : ISchemeBlank, IBuild<IRouteScheme>
     private bool _isExecuteOnlySpecifiedContext;
     private Type _viewType;
     private Type _viewModelType;
+    private bool _isNavigationRoot;
 
     public ISchemeBlank AttachContext(string contextKey)
     {
@@ -54,6 +54,12 @@ internal class SchemeBlank : ISchemeBlank, IBuild<IRouteScheme>
         return this;
     }
 
+    public ISchemeBlank AsRoot()
+    {
+        _isNavigationRoot = true;
+        return this;
+    }
+
     public IRouteScheme Build()
     {
         IContextInfo info = new ContextInfo()
@@ -63,6 +69,6 @@ internal class SchemeBlank : ISchemeBlank, IBuild<IRouteScheme>
             RequiredContextKey = _contextKey
         };
 
-        return new RouteScheme(_viewModelType, _viewType, info);
+        return new RouteScheme(_viewModelType, _viewType, info, _isNavigationRoot) ;
     }
 }
