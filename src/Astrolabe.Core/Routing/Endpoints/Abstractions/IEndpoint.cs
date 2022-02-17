@@ -1,12 +1,12 @@
 ﻿using System;
 using Astrolabe.Core.Routing.Context.Abstraction;
 
-namespace Astrolabe.Core.Routing.Schemes.Abstractions;
+namespace Astrolabe.Core.Routing.Endpoints.Abstractions;
 
 /// <summary>
 /// Представляет схему маршрута.
 /// </summary>
-public interface IRouteScheme
+public interface IEndpoint
 {
     /// <summary>
     /// Предоставляет тип модели представления.

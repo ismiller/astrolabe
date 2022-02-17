@@ -1,34 +1,30 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using Astrolabe.Core.Components.Abstractions;
-using Astrolabe.Core.Routing.Context.Abstraction;
-using Astrolabe.Core.Routing.Schemes.Abstractions;
+using Astrolabe.Core.Routing.Endpoints.Abstractions;
 using Astrolabe.Core.Utilities.Security;
-using Astrolabe.Core.ViewModels.Abstractions;
 
-namespace Astrolabe.Core.Routing.Schemes;
+namespace Astrolabe.Core.Routing.Endpoints;
 
 /// <summary>
 /// Предоставляет функционал словаря маршрутов.
 /// </summary>
-internal sealed class RouteSchemeDictionary : IRouteSchemeDictionary<IRouteScheme>
+internal sealed class EndpointsDictionary : IEndpointsDictionary<IEndpoint>
 {
-
     #region Private Fields
 
-    private readonly Dictionary<string, IRouteScheme> _schemes;
+    private readonly Dictionary<string, IEndpoint> _schemes;
 
     #endregion Private Fields
 
     #region Public Constructors
 
     /// <summary>
-    /// Создает экземпляр <see cref="RouteSchemeDictionary"/>.
+    /// Создает экземпляр <see cref="EndpointsDictionary"/>.
     /// </summary>
-    public RouteSchemeDictionary()
+    public EndpointsDictionary()
     {
-        _schemes = new Dictionary<string, IRouteScheme>();
+        _schemes = new Dictionary<string, IEndpoint>();
     }
 
     #endregion Public Constructors
@@ -36,7 +32,7 @@ internal sealed class RouteSchemeDictionary : IRouteSchemeDictionary<IRouteSchem
     #region Public Methods
 
     /// <inheritdoc />
-    public IEnumerator<IRouteScheme> GetEnumerator()
+    public IEnumerator<IEndpoint> GetEnumerator()
     {
         return _schemes.Values.GetEnumerator();
     }
@@ -47,19 +43,19 @@ internal sealed class RouteSchemeDictionary : IRouteSchemeDictionary<IRouteSchem
         return _schemes.Values.GetEnumerator();
     }
 
-    public void RegisterScheme(IRouteScheme scheme)
+    public void RegisterScheme(IEndpoint scheme)
     {
         string key = scheme.ViewModelType.FullName;
         _schemes.Add(key, scheme);
     }
 
     /// <inheritdoc />
-    public bool TryGetScheme(Type viewModelType, out IRouteScheme scheme)
+    public bool TryGetScheme(Type viewModelType, out IEndpoint scheme)
     {
         scheme = default;
         Security.ProtectFrom.Null(viewModelType, nameof(viewModelType));
         string key = viewModelType.FullName;
-        if (_schemes.TryGetValue(key, out IRouteScheme concreteScheme))
+        if (_schemes.TryGetValue(key, out IEndpoint concreteScheme))
         {
             scheme = concreteScheme;
             return true;

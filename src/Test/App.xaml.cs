@@ -1,7 +1,6 @@
 ﻿using Astrolabe.AppSDK;
 using Astrolabe.AppSDK.Extensions;
 using Astrolabe.Core;
-using Astrolabe.Core.Routing.Context.Abstraction;
 using Microsoft.UI.Xaml;
 
 namespace Test
@@ -28,9 +27,8 @@ namespace Test
         protected override void OnLaunched(LaunchActivatedEventArgs args)
         {
             NavigationBuilder.DefaultBuilder
-                .TargetContextProvider<RouteContextProvider>()
+                .UseAppSdkPlatform()
                 .UseConfigure<Configure>()
-                .UseAppSdk()
                 .Build()
                 .Run();
         }

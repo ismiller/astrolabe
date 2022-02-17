@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Astrolabe.Core.Routing.Schemes.Abstractions;
+namespace Astrolabe.Core.Routing.Endpoints.Abstractions;
 
 /// <summary>
 /// Определяет функционал словаря маршрутов.
 /// </summary>
-public interface IRouteSchemeDictionary<T> : IEnumerable<T>
+public interface IEndpointsDictionary<T> : IEnumerable<T>
 {
     /// <summary>
     /// Пытается извлечь из словаря схему маршрута.

@@ -7,11 +7,11 @@ using Astrolabe.Core.Routing.Context.Abstraction;
 
 namespace Astrolabe.AppSDK;
 
-public class RouteContextProvider : IRouteContextProvider
+public class AppSdkContextProvider : IRouteContextProvider
 {
     private readonly IRouteContextResolver _resolver;
 
-    public RouteContextProvider(IRouteContextResolver resolver)
+    public AppSdkContextProvider(IRouteContextResolver resolver)
     {
         _resolver = resolver;
     }

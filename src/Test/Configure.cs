@@ -1,6 +1,6 @@
 ﻿using Astrolabe.AppSDK.Navigating;
 using Astrolabe.Core;
-using Astrolabe.Core.Routing.Schemes.Abstractions;
+using Astrolabe.Core.Routing.Endpoints.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml.Media.Animation;
 
@@ -8,23 +8,21 @@ namespace Test
 {
     public class Configure : IConfigurable
     {
-        public void ConfigureScheme(ISchemeBuilder schemeBuilder)
+        public void ConfigureSchemes(IEndpointBuilder endpointBuilder)
         {
-            schemeBuilder.AddScheme()
-                .SetView<TestPage>()
-                .SetViewModel<TestPageViewModel>()
-                .AttachContext("root_frame")
-                .AsRoot()
-                .AttachFrameOptions(
+            endpointBuilder.AttachSchemeToRoot()
+                .SetView(typeof(TestPage))
+                .SetViewModel(typeof(TestPageViewModel))
+                .IsRoot()
+                .SetFrameOptions(
                     new FrameOptions(
                         new CommonNavigationTransitionInfo()));
 
-            schemeBuilder.AddScheme()
-                .SetView<InnerPage>()
-                .SetViewModel<InnerPageViewModel>()
-                .AttachContext("inner_frame")
+            endpointBuilder.AttachSchemeToContext("inner_frame")
+                .SetView(typeof(InnerPage))
+                .SetViewModel(typeof(InnerPageViewModel))
                 .ExecuteOnlySpecifiedContext()
-                .AttachFrameOptions(
+                .SetFrameOptions(
                     new FrameOptions(
                         new CommonNavigationTransitionInfo()));
         }

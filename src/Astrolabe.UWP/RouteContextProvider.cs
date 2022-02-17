@@ -31,7 +31,7 @@ public class RouteContextProvider : IRouteContextProvider
 
         if (frame is null)
         {
-            if (info.IsExecuteOnlySpecifiedContext)
+            if (info.IsRequiredSpecifiedContext)
             {
                 //TODO: заменить на кастомную ошибку
                 throw new ArgumentNullException(nameof(frame));

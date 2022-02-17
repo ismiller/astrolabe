@@ -1,30 +1,30 @@
 ﻿using System.Linq;
 using Astrolabe.Core.Abstractions;
-using Astrolabe.Core.Routing.Schemes.Abstractions;
+using Astrolabe.Core.Routing.Endpoints.Abstractions;
 using Astrolabe.Core.ViewModels.Abstractions;
 
 namespace Astrolabe.AppSDK;
 
 internal class StartUp : IStartUp
 {
-    private readonly IRouteSchemeDictionary<IRouteScheme> _schemes;
+    private readonly IEndpointsDictionary<IEndpoint> _endpoints;
     private readonly IAstrolabe _navigator;
 
-    public StartUp(IRouteSchemeDictionary<IRouteScheme> schemes, IAstrolabe navigator)
+    public StartUp(IEndpointsDictionary<IEndpoint> endpoints, IAstrolabe navigator)
     {
-        _schemes = schemes;
+        _endpoints = endpoints;
         _navigator = navigator;
     }
 
     public void Run()
     {
-        IRouteScheme scheme = _schemes.FirstOrDefault(s => s.IsRoot);
-        if (scheme is null)
+        IEndpoint endpoint = _endpoints.FirstOrDefault(s => s.IsRoot);
+        if (endpoint is null)
         {
             ///TODO:бросаем исклбючение
         }
 
-        _navigator.NavigateTo(scheme.ViewModelType, default);
+        _navigator.NavigateTo(endpoint.ViewModelType, default);
     }
 
     public void Run<T>() where T : INavigatable

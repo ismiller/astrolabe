@@ -20,5 +20,11 @@ public interface IContextInfo
     /// <summary>
     /// Предоставляет флаг, указывающий на необходимость выполнения маршрута только в указанном контексте.
     /// </summary>
-    public bool IsExecuteOnlySpecifiedContext { get; }
+    public bool IsRequiredSpecifiedContext { get; }
+
+    /// <summary>
+    /// Предоставляет или устанавливает флаг, указывающий, что маршрут, связанный с этим контекстом,
+    /// должен будет выполниться в корневом фрейме окна.
+    /// </summary>
+    public bool IsRequiredRootFrame { get; set; }
 }

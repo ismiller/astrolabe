@@ -20,7 +20,7 @@ public static class StartupExtension
         }
     }
 
-    public static INavigatorBuilder UseAppSdk(this INavigatorBuilder builder)
+    public static INavigatorBuilder UseAppSdkStrtup(this INavigatorBuilder builder)
     {
         return builder.UseStartUp<StartUp>();
     }

@@ -13,5 +13,8 @@ internal class ContextInfo : IContextInfo
     public IFrameOptions FrameOptions { get; set; }
 
     /// <inheritdoc />
-    public bool IsExecuteOnlySpecifiedContext { get; set; }
+    public bool IsRequiredSpecifiedContext { get; set; }
+
+    /// <inheritdoc />
+    public bool IsRequiredRootFrame { get; set; }
 }

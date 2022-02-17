@@ -1,24 +1,23 @@
 ﻿using System;
-using System.Linq;
 using Astrolabe.Core.Abstractions;
 using Astrolabe.Core.Routing.Context;
 using Astrolabe.Core.Routing.Context.Abstraction;
+using Astrolabe.Core.Routing.Endpoints;
+using Astrolabe.Core.Routing.Endpoints.Abstractions;
 using Astrolabe.Core.Routing.Routes;
 using Astrolabe.Core.Routing.Routes.Abstractions;
 using Astrolabe.Core.Routing.Schemes;
-using Astrolabe.Core.Routing.Schemes.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Astrolabe.Core;
 
 public class NavigationBuilder : INavigatorBuilder
 {
-
     #region Private Fields
 
-    private readonly ISchemeBuilder _schemeBuilder;
+    private readonly IEndpointBuilder _endpointBuilder;
     private readonly IServiceCollection _serviceCollection;
-    private IRouteSchemeDictionary<IRouteScheme> _schemes;
+    private IEndpointsDictionary<IEndpoint> _schemes;
 
     private Action _useConfigure;
     private Action _useStartUp;
@@ -35,7 +34,7 @@ public class NavigationBuilder : INavigatorBuilder
 
     private NavigationBuilder()
     {
-        _schemeBuilder = new SchemeBuilder();
+        _endpointBuilder = new EndpointBuilder();
         _serviceCollection = new ServiceCollection();
     }
 
@@ -60,7 +59,7 @@ public class NavigationBuilder : INavigatorBuilder
             IConfigurable configurable = scope.ServiceProvider.GetRequiredService<IConfigurable>();
 
             configurable.ConfigureServices(_serviceCollection);
-            configurable.ConfigureScheme(_schemeBuilder);
+            configurable.ConfigureSchemes(_endpointBuilder);
         }
 
         provider = _serviceCollection.BuildServiceProvider(options);
@@ -69,7 +68,7 @@ public class NavigationBuilder : INavigatorBuilder
         {
             IRouteContextProvider contextProvider = scope.ServiceProvider.GetRequiredService<IRouteContextProvider>();
 
-            var schemeBuilder = _schemeBuilder as IBuild<IRouteSchemeDictionary<IRouteScheme>>;
+            var schemeBuilder = _endpointBuilder as IBuild<IEndpointsDictionary<IEndpoint>>;
             _schemes = schemeBuilder.Build();
             _serviceCollection.AddTransient(s => _schemes);
             IRouter router = new Router(_schemes, _serviceCollection, contextProvider);
@@ -84,7 +83,7 @@ public class NavigationBuilder : INavigatorBuilder
             IRouter router = scope.ServiceProvider.GetRequiredService<IRouter>();
             router.Activate();
         }
-        
+
         _useStartUp?.Invoke();
 
         provider = _serviceCollection.BuildServiceProvider(options);
@@ -99,7 +98,7 @@ public class NavigationBuilder : INavigatorBuilder
     {
         _serviceCollection.AddTransient<IRouteContextResolver, RouteContextResolver>();
         _serviceCollection.AddTransient<IRouteContextProvider, T>();
-        
+
         return this;
     }
 
@@ -109,6 +108,7 @@ public class NavigationBuilder : INavigatorBuilder
 
         return this;
     }
+
     public INavigatorBuilder UseStartUp<T>() where T : class, IStartUp
     {
         _useStartUp = () => _serviceCollection.AddTransient<IStartUp, T>();
@@ -117,5 +117,4 @@ public class NavigationBuilder : INavigatorBuilder
     }
 
     #endregion Public Methods
-
 }

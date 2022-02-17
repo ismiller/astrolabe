@@ -1,12 +1,12 @@
 ﻿using System;
 using Astrolabe.Core.Routing.Context.Abstraction;
-using Astrolabe.Core.Routing.Schemes.Abstractions;
+using Astrolabe.Core.Routing.Endpoints.Abstractions;
 using Astrolabe.Core.Utilities.Security;
 
 namespace Astrolabe.Core.Routing.Schemes;
 
 /// <inheritdoc />
-internal sealed class RouteScheme : IRouteScheme
+internal sealed class Endpoint : IEndpoint
 {
     #region Public Properties
 
@@ -23,13 +23,13 @@ internal sealed class RouteScheme : IRouteScheme
     public bool IsRoot { get; }
 
     /// <summary>
-    /// Инициализирует новый экземпляр <see cref="RouteScheme"/>.
+    /// Инициализирует новый экземпляр <see cref="Endpoint"/>.
     /// </summary>
     /// <param name="viewModelType">Тип модели представления.</param>
     /// <param name="viewType">Тип визуального представления.</param>
     /// <param name="info">Информация о контексте навигации.</param>
     /// <param name="isRoot">Флаг, указывающий, является ли маршрут корневым.</param>
-    public RouteScheme(Type viewModelType, Type viewType, IContextInfo info, bool isRoot)
+    public Endpoint(Type viewModelType, Type viewType, IContextInfo info, bool isRoot)
     {
         ViewModelType = Security.ProtectFrom.Null(viewModelType, nameof(viewModelType));
         ViewType = Security.ProtectFrom.Null(viewType, nameof(viewType));

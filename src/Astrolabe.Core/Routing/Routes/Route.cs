@@ -44,10 +44,8 @@ internal sealed class Route : IRoute
         {
             return RoutingResult.Succeeded(_viewModelContainer.ViewModel);
         }
-        else
-        {
-            return RoutingResult.Failed();
-        }
+     
+        return RoutingResult.Failed();
     }
 
     #endregion Public Methods
