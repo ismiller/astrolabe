@@ -6,7 +6,6 @@ using Astrolabe.Core.Routing.Endpoints;
 using Astrolabe.Core.Routing.Endpoints.Abstractions;
 using Astrolabe.Core.Routing.Routes;
 using Astrolabe.Core.Routing.Routes.Abstractions;
-using Astrolabe.Core.Routing.Schemes;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Astrolabe.Core;
@@ -17,7 +16,7 @@ public class NavigationBuilder : INavigatorBuilder
 
     private readonly IEndpointBuilder _endpointBuilder;
     private readonly IServiceCollection _serviceCollection;
-    private IEndpointsDictionary<IEndpoint> _schemes;
+    private IEndpointsDictionary _schemes;
 
     private Action _useConfigure;
     private Action _useStartUp;
@@ -68,7 +67,7 @@ public class NavigationBuilder : INavigatorBuilder
         {
             IRouteContextProvider contextProvider = scope.ServiceProvider.GetRequiredService<IRouteContextProvider>();
 
-            var schemeBuilder = _endpointBuilder as IBuild<IEndpointsDictionary<IEndpoint>>;
+            var schemeBuilder = _endpointBuilder as IBuild<IEndpointsDictionary>;
             _schemes = schemeBuilder.Build();
             _serviceCollection.AddTransient(s => _schemes);
             IRouter router = new Router(_schemes, _serviceCollection, contextProvider);

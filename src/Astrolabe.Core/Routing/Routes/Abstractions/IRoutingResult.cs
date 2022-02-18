@@ -1,11 +1,12 @@
-﻿using Astrolabe.Core.ViewModels.Abstractions;
+﻿using Astrolabe.Core.Routing.History.Abstractions;
+using Astrolabe.Core.ViewModels.Abstractions;
 
 namespace Astrolabe.Core.Routing.Routes.Abstractions;
 
 /// <summary>
 /// Предоставляет результат выполнения маршрута.
 /// </summary>
-public interface IRoutingResult
+internal interface IRoutingResult
 {
     /// <summary>
     /// Предоставляет флаг, указывающий на успешное выполнение маршрута.
@@ -16,6 +17,8 @@ public interface IRoutingResult
     /// Предоставляет сообщение результата выполнения маршрута.
     /// </summary>
     string Message { get; }
+
+    IRouteHistoryInfo HistoryInfo { get; }
 
     /// <summary>
     /// Применяет переданные аргументы навигации.

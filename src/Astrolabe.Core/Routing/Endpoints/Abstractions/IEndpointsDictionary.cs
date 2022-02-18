@@ -6,19 +6,19 @@ namespace Astrolabe.Core.Routing.Endpoints.Abstractions;
 /// <summary>
 /// Определяет функционал словаря маршрутов.
 /// </summary>
-public interface IEndpointsDictionary<T> : IEnumerable<T>
+public interface IEndpointsDictionary : IEnumerable<IEndpoint>
 {
     /// <summary>
     /// Пытается извлечь из словаря схему маршрута.
     /// </summary>
     /// <param name="viewModelType"></param>
-    /// <param name="scheme">Извлеченный маршрут. <see langword="null" /> если маршрут не найден.</param>
+    /// <param name="endpoint">Извлеченный маршрут. <see langword="null" /> если маршрут не найден.</param>
     /// <returns><see langword="true"/> - если маршрут найден, иначе <see langword="false"/>.</returns>
-    bool TryGetScheme(Type viewModelType, out T scheme);
+    bool TryGetEndpoint(Type viewModelType, out IEndpoint endpoint);
 
     /// <summary>
     /// Регистрирует маршрут в словаре.
     /// </summary>
-    /// <param name="scheme">Схема маршрута.</param>
-    void RegisterScheme(T scheme);
+    /// <param name="endpoint">Схема маршрута.</param>
+    void RegisterEndpoint(IEndpoint endpoint);
 }

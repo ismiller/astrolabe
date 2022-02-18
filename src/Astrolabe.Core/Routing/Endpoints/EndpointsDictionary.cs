@@ -9,11 +9,11 @@ namespace Astrolabe.Core.Routing.Endpoints;
 /// <summary>
 /// Предоставляет функционал словаря маршрутов.
 /// </summary>
-internal sealed class EndpointsDictionary : IEndpointsDictionary<IEndpoint>
+internal sealed class EndpointsDictionary : IEndpointsDictionary
 {
     #region Private Fields
 
-    private readonly Dictionary<string, IEndpoint> _schemes;
+    private readonly Dictionary<string, IEndpoint> _endpoints;
 
     #endregion Private Fields
 
@@ -24,7 +24,7 @@ internal sealed class EndpointsDictionary : IEndpointsDictionary<IEndpoint>
     /// </summary>
     public EndpointsDictionary()
     {
-        _schemes = new Dictionary<string, IEndpoint>();
+        _endpoints = new Dictionary<string, IEndpoint>();
     }
 
     #endregion Public Constructors
@@ -34,30 +34,30 @@ internal sealed class EndpointsDictionary : IEndpointsDictionary<IEndpoint>
     /// <inheritdoc />
     public IEnumerator<IEndpoint> GetEnumerator()
     {
-        return _schemes.Values.GetEnumerator();
+        return _endpoints.Values.GetEnumerator();
     }
 
     /// <inheritdoc />
     IEnumerator IEnumerable.GetEnumerator()
     {
-        return _schemes.Values.GetEnumerator();
+        return _endpoints.Values.GetEnumerator();
     }
 
-    public void RegisterScheme(IEndpoint scheme)
+    public void RegisterEndpoint(IEndpoint endpoint)
     {
-        string key = scheme.ViewModelType.FullName;
-        _schemes.Add(key, scheme);
+        string key = endpoint.ViewModelType.FullName;
+        _endpoints.Add(key, endpoint);
     }
 
     /// <inheritdoc />
-    public bool TryGetScheme(Type viewModelType, out IEndpoint scheme)
+    public bool TryGetEndpoint(Type viewModelType, out IEndpoint endpoint)
     {
-        scheme = default;
+        endpoint = default;
         Security.ProtectFrom.Null(viewModelType, nameof(viewModelType));
         string key = viewModelType.FullName;
-        if (_schemes.TryGetValue(key, out IEndpoint concreteScheme))
+        if (_endpoints.TryGetValue(key, out IEndpoint concreteScheme))
         {
-            scheme = concreteScheme;
+            endpoint = concreteScheme;
             return true;
         }
 

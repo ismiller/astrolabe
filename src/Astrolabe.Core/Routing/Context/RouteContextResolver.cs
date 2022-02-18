@@ -9,8 +9,8 @@ namespace Astrolabe.Core.Routing.Context;
 public class RouteContextResolver : IRouteContextResolver
 {
     /// <inheritdoc />
-    public IRouteContext Resolve(INavigationFrame frame, IFrameOptions options)
+    public IRouteContext Resolve(INavigationFrame frame)
     {
-        return new RouteContext(frame, options);
+        return new RouteContext(frame);
     }
 }

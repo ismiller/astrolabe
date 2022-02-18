@@ -1,20 +1,13 @@
 ﻿using Astrolabe.Core.Components.Abstractions;
-using Astrolabe.Core.Routing.Context.Abstraction;
+using Astrolabe.Core.Routing.Endpoints.Abstractions;
 
-namespace Astrolabe.Core.Routing.Context;
+namespace Astrolabe.Core.Routing.Endpoints;
 
-/// <inheritdoc />
-internal class ContextInfo : IContextInfo
+public class EndpointOptions : IEndpointOptions
 {
-    /// <inheritdoc />
+    public bool IsRootEndpoint { get; set; }
     public string RequiredContextKey { get; set; }
-
-    /// <inheritdoc />
     public IFrameOptions FrameOptions { get; set; }
-
-    /// <inheritdoc />
     public bool IsRequiredSpecifiedContext { get; set; }
-
-    /// <inheritdoc />
     public bool IsRequiredRootFrame { get; set; }
 }

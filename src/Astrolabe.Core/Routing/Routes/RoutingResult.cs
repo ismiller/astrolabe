@@ -1,4 +1,5 @@
-﻿using Astrolabe.Core.Routing.Routes.Abstractions;
+﻿using Astrolabe.Core.Routing.History.Abstractions;
+using Astrolabe.Core.Routing.Routes.Abstractions;
 using Astrolabe.Core.ViewModels.Abstractions;
 
 namespace Astrolabe.Core.Routing.Routes;
@@ -20,19 +21,22 @@ internal sealed class RoutingResult : IRoutingResult
     /// <inheritdoc />
     public string Message { get; }
 
+    public IRouteHistoryInfo HistoryInfo { get; }
+
     #endregion Public Properties
 
     #region Private Constructors
 
-    private RoutingResult(bool isSuccess, INavigatable navigatable, string message)
+    private RoutingResult(INavigatable navigatable, IRouteHistoryInfo info, bool isSuccess, string message)
     {
         IsSuccess = isSuccess;
         Message = message;
         _navigatable = navigatable;
+        HistoryInfo = info;
     }
 
     private RoutingResult(bool isSuccess, string message)
-        : this(isSuccess, default, message)
+        : this(default, default, isSuccess, message)
     {
     }
 
@@ -41,7 +45,7 @@ internal sealed class RoutingResult : IRoutingResult
     #region Public Methods
 
     /// <summary>
-    /// Прдоставляет экземпляр <see cref="IRoutingResult"/> неудачного выполнения маршурта.
+    /// Предоставляет экземпляр <see cref="IRoutingResult"/> неудачного выполнения маршрута.
     /// </summary>
     /// <param name="message">Сообщение навигации.</param>
     /// <returns>Результат навигации.</returns>
@@ -51,14 +55,14 @@ internal sealed class RoutingResult : IRoutingResult
     }
 
     /// <summary>
-    /// Прдоставляет экземпляр <see cref="IRoutingResult"/> успешного выполнения маршурта.
+    /// Предоставляет экземпляр <see cref="IRoutingResult"/> успешного выполнения маршрута.
     /// </summary>
     /// <param name="navigatable">Навигируемый объект.</param>
     /// <param name="message">Сообщение навигации.</param>
     /// <returns>Результат навигации.</returns>
-    public static IRoutingResult Succeeded(INavigatable navigatable, string message = default)
+    public static IRoutingResult Succeeded(INavigatable navigatable, IRouteHistoryInfo info, string message = default)
     {
-        return new RoutingResult(true, navigatable, message);
+        return new RoutingResult(navigatable, info, true, message);
     }
 
     /// <inheritdoc />

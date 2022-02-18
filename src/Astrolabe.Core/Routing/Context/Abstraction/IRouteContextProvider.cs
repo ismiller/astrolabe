@@ -8,7 +8,7 @@ public interface IRouteContextProvider
     /// <summary>
     /// Предоставляет контекст выполнения маршрута.
     /// </summary>
-    /// <param name="info">Информация о запрашиваемом контексте выполнения.</param>
+    /// <param name="request">Информация о запрашиваемом контексте выполнения.</param>
     /// <returns>Запрошенный контекст выполнения.</returns>
-    IRouteContext GetContext(IContextInfo info);
+    IRouteContext GetContext(IContextRequest request);
 }

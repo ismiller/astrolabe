@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Astrolabe.Core.Routing.Routes.Abstractions;
 
-namespace Astrolabe.Core.Routing.History.Abstractions
+namespace Astrolabe.Core.Routing.History.Abstractions;
+
+internal interface IRouteHistoryInfo
 {
-    public interface IRouteHistoryInfo
-    {
+    string ContextKey { get; }
 
-    }
+    string TargetViewModelName { get; }
+
+    public INavigationExecutor LastExecutor { get; }
 }

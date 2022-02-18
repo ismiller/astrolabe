@@ -1,12 +1,14 @@
 ﻿using Astrolabe.Core.Components.Abstractions;
 
-namespace Astrolabe.Core.Routing.Context.Abstraction;
+namespace Astrolabe.Core.Routing.Endpoints.Abstractions;
 
-/// <summary>
-/// Определяет опции выполнения маршрута.
-/// </summary>
-public interface IContextInfo
+public interface IEndpointOptions
 {
+    /// <summary>
+    /// Предоставляет флаг, указывающий, что схема является корнем выполнения навигации.
+    /// </summary>
+    bool IsRootEndpoint { get; }
+
     /// <summary>
     /// Предоставляет ключ контекста выполнения маршрута.
     /// </summary>

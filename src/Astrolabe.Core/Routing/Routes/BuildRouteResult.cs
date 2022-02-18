@@ -17,17 +17,17 @@ internal sealed class BuildRouteResult : IBuildRouteResult
     public string Message { get; }
 
     /// <inheritdoc />
-    public IRouteMover Mover { get; }
+    public INavigationExecutor Mover { get; }
 
     #endregion Public Properties
 
     #region Private Constructors
 
-    private BuildRouteResult(bool isSuccess, string message, IRouteMover routeMover)
+    private BuildRouteResult(bool isSuccess, string message, INavigationExecutor navigationExecutor)
     {
         IsSuccess = isSuccess;
         Message = message;
-        Mover = Security.ProtectFrom.Null(routeMover, nameof(routeMover));
+        Mover = Security.ProtectFrom.Null(navigationExecutor, nameof(navigationExecutor));
     }
 
     private BuildRouteResult(bool isSuccess, string message)
@@ -41,7 +41,7 @@ internal sealed class BuildRouteResult : IBuildRouteResult
     #region Public Methods
 
     /// <summary>
-    /// Предоставляет экземпляр <see cref="IRoutingResult"/> неудачного выполнения маршурта.
+    /// Предоставляет экземпляр <see cref="IRoutingResult"/> неудачного выполнения маршрута.
     /// </summary>
     /// <param name="message">Сообщение ошибки получения маршрута.</param>
     /// <returns>Результат получения маршрута.</returns>
@@ -56,7 +56,7 @@ internal sealed class BuildRouteResult : IBuildRouteResult
     /// <param name="mover">исполнитель маршрута.</param>
     /// <param name="message">Сообщение получения маршрута.</param>
     /// <returns>Результат получения маршрута.</returns>
-    public static IBuildRouteResult Succeeded(IRouteMover mover, string message = default)
+    public static IBuildRouteResult Succeeded(INavigationExecutor mover, string message = default)
     {
         return new BuildRouteResult(true, message, mover);
     }

@@ -1,8 +1,8 @@
 ﻿using System;
 using Astrolabe.Core.Components.Abstractions;
 using Astrolabe.Core.Routing.Context.Abstraction;
+using Astrolabe.Core.Routing.Routes.Abstractions;
 using Astrolabe.Core.Utilities.Security;
-using Astrolabe.Core.ViewModels.Abstractions;
 
 namespace Astrolabe.Core.Routing.Context;
 
@@ -14,7 +14,6 @@ internal sealed class RouteContext : IRouteContext
     #region Private Fields
 
     private readonly INavigationFrame _frame;
-    private readonly IFrameOptions _options;
 
     #endregion Private Fields
 
@@ -24,10 +23,9 @@ internal sealed class RouteContext : IRouteContext
     /// Создает экземпляр <see cref="RouteContext"/>.
     /// </summary>
     /// <param name="frame">Экземпляр <see cref="INavigationFrame"/> в рамках которого производится навигация.</param>
-    /// <param name="options"></param>
-    public RouteContext(INavigationFrame frame, IFrameOptions options)
+
+    public RouteContext(INavigationFrame frame)
     {
-        _options = Security.ProtectFrom.Null(options, nameof(options));
         _frame = Security.ProtectFrom.Null(frame, nameof(frame));
     }
 
@@ -36,9 +34,9 @@ internal sealed class RouteContext : IRouteContext
     #region Public Methods
 
     /// <inheritdoc />
-    public bool TryExecute(Type viewType, IViewModelContainer container)
+    public bool ExecuteRoute(IRoute route, IFrameOptions options)
     {
-        return _frame.ExecuteNavigation(viewType, container, _options);
+        return _frame.ExecuteNavigation(route.ViewType, route.ViewModelContainer, options);
     }
 
     #endregion Public Methods

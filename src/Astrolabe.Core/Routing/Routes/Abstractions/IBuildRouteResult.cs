@@ -18,5 +18,5 @@ internal interface IBuildRouteResult
     /// <summary>
     /// Предоставляет полученный маршрут.
     /// </summary>
-    IRouteMover Mover { get; }
+    INavigationExecutor Mover { get; }
 }

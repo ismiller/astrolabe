@@ -1,5 +1,4 @@
 ﻿using System;
-using Astrolabe.Core.Routing.Context.Abstraction;
 
 namespace Astrolabe.Core.Routing.Endpoints.Abstractions;
 
@@ -19,12 +18,7 @@ public interface IEndpoint
     Type ViewType { get; }
 
     /// <summary>
-    /// Предоставляет опции контекста выполнения маршрута.
+    /// 
     /// </summary>
-    IContextInfo ContextInfo { get; }
-
-    /// <summary>
-    /// Предоставляет флаг, указывающий, что схема является корнем выполнения навигации.
-    /// </summary>
-    bool IsRoot { get; }
+    IEndpointOptions Options { get; }
 }

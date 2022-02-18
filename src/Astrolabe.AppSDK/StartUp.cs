@@ -7,10 +7,10 @@ namespace Astrolabe.AppSDK;
 
 internal class StartUp : IStartUp
 {
-    private readonly IEndpointsDictionary<IEndpoint> _endpoints;
+    private readonly IEndpointsDictionary _endpoints;
     private readonly IAstrolabe _navigator;
 
-    public StartUp(IEndpointsDictionary<IEndpoint> endpoints, IAstrolabe navigator)
+    public StartUp(IEndpointsDictionary endpoints, IAstrolabe navigator)
     {
         _endpoints = endpoints;
         _navigator = navigator;
@@ -18,7 +18,7 @@ internal class StartUp : IStartUp
 
     public void Run()
     {
-        IEndpoint endpoint = _endpoints.FirstOrDefault(s => s.IsRoot);
+        IEndpoint endpoint = _endpoints.FirstOrDefault(s => s.Options.IsRootEndpoint);
         if (endpoint is null)
         {
             ///TODO:бросаем исклбючение

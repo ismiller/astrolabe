@@ -17,7 +17,7 @@ public class RouteContextProvider : IRouteContextProvider
         _resolver = resolver;
     }
 
-    public IRouteContext GetContext(IContextInfo info)
+    public IRouteContext GetContext(IContextRequest request)
     {
         AstrolabeFrame rootFrame = Window.Current.Content as AstrolabeFrame;
         if (rootFrame is null)
@@ -27,19 +27,19 @@ public class RouteContextProvider : IRouteContextProvider
         }
 
         INavigationFrame frame = rootFrame.FindChildren<AstrolabeFrame>()
-            .FirstOrDefault(c => c.ContextKey == info.RequiredContextKey);
+            .FirstOrDefault(c => c.ContextKey == request.ContextKey);
 
         if (frame is null)
         {
-            if (info.IsRequiredSpecifiedContext)
+            if (request.IsRequiredSpecifiedContext)
             {
                 //TODO: заменить на кастомную ошибку
                 throw new ArgumentNullException(nameof(frame));
             }
 
-            return _resolver.Resolve(rootFrame, info.FrameOptions);
+            return _resolver.Resolve(rootFrame);
         }
 
-        return _resolver.Resolve(frame, info.FrameOptions);
+        return _resolver.Resolve(frame);
     }
 }

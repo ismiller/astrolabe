@@ -14,8 +14,9 @@ internal sealed class Route : IRoute
 {
     #region Private Fields
 
-    private readonly IViewModelContainer _viewModelContainer;
-    private readonly Type _viewType;
+    public IViewModelContainer ViewModelContainer { get; }
+
+    public Type ViewType { get; }
 
     #endregion Private Fields
 
@@ -26,26 +27,19 @@ internal sealed class Route : IRoute
     /// </summary>
     /// <param name="viewModel">Навигируемый объект.</param>
     /// <param name="viewType">Тип представления.</param>
-    public Route(INavigatable viewModel, Type viewType)
+    private Route(INavigatable viewModel, Type viewType)
     {
-        _viewType = Security.ProtectFrom.Null(viewType, nameof(viewType));
-        _viewModelContainer = new ViewModelContainer(viewModel);
+        ViewType = Security.ProtectFrom.Null(viewType, nameof(viewType));
+        ViewModelContainer = new ViewModelContainer(viewModel);
     }
 
     #endregion Public Constructors
 
     #region Public Methods
 
-    /// <inheritdoc />
-    public IRoutingResult TryExecute(IRouteContext context)
+    public static IRoute BuildRoute(INavigatable viewModel, Type viewType)
     {
-        bool result = context.TryExecute(_viewType, _viewModelContainer);
-        if (result)
-        {
-            return RoutingResult.Succeeded(_viewModelContainer.ViewModel);
-        }
-     
-        return RoutingResult.Failed();
+        return new Route(viewModel, viewType);
     }
 
     #endregion Public Methods

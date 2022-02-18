@@ -11,7 +11,6 @@ public interface IRouteContextResolver
     /// Регистрирует контекст маршрута.
     /// </summary>
     /// <param name="frame">Компонент визуального отображения навигации.</param>
-    /// <param name="options">Опции компонента визуального отображения навигации.</param>
     /// <returns>Контекст маршрута.</returns>
-    IRouteContext Resolve(INavigationFrame frame, IFrameOptions options);
+    IRouteContext Resolve(INavigationFrame frame);
 }

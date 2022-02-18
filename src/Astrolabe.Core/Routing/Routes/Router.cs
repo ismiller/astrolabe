@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
+using Astrolabe.Core.Routing.Context;
 using Astrolabe.Core.Routing.Context.Abstraction;
 using Astrolabe.Core.Routing.Endpoints.Abstractions;
 using Astrolabe.Core.Routing.Routes.Abstractions;
@@ -18,7 +19,7 @@ internal sealed class Router : IRouter
 
     private IServiceProvider _provider;
     private readonly IServiceCollection _serviceCollection;
-    private readonly IEndpointsDictionary<IEndpoint> _endpointsDictionary;
+    private readonly IEndpointsDictionary _endpointsDictionary;
     private readonly IRouteContextProvider _contextProvider;
     private IRouteContext _currentContext;
 
@@ -32,7 +33,7 @@ internal sealed class Router : IRouter
     /// <param name="endpointsDictionary">Словарь маршрутов.</param>
     /// <param name="collection">Коллекция сервисов.</param>
     /// <param name="contextProvider">Провайдер контекста выполнения маршрута.</param>
-    public Router(IEndpointsDictionary<IEndpoint> endpointsDictionary, IServiceCollection collection, IRouteContextProvider contextProvider)
+    public Router(IEndpointsDictionary endpointsDictionary, IServiceCollection collection, IRouteContextProvider contextProvider)
     {
         _contextProvider = Security.ProtectFrom.Null(contextProvider, nameof(contextProvider));
         _endpointsDictionary = Security.ProtectFrom.Null(endpointsDictionary, nameof(endpointsDictionary));
@@ -44,33 +45,35 @@ internal sealed class Router : IRouter
     #region Public Methods
 
     /// <inheritdoc />
-    public IBuildRouteResult GetRequiredRoute(Type viewModelType)
+    public IBuildRouteResult GetRequiredRoute(RouteBuildRequest request)
     {
-        if (_endpointsDictionary.TryGetScheme(viewModelType, out IEndpoint scheme))
+        if (_endpointsDictionary.TryGetEndpoint(request.RequestViewModelType, out IEndpoint endpoint))
         {
-            IRouteContext context = GetContext(scheme.ContextInfo);
-
-            object viewModel = _provider.GetRequiredService(scheme.ViewModelType);
+            string key = endpoint.Options.RequiredContextKey;
+            bool isRequired = endpoint.Options.IsRequiredSpecifiedContext;
+            IContextRequest contextRequest = BuildContextRequest(key, isRequired);
+            IRouteContext context = GetContext(contextRequest);
+            
+            object viewModel = _provider.GetRequiredService(endpoint.ViewModelType);
 
             if (viewModel is INavigatable concreteViewModel)
             {
-                IRoute route = new Route(concreteViewModel, scheme.ViewType);
-                IRouteMover mover = new RouteMover(route, context);
+                IRoute route = Route.BuildRoute(concreteViewModel, endpoint.ViewType);
+                INavigationExecutor executor = new NavigationExecutor(route, context, endpoint.Options);
                 _currentContext = context;
-                return BuildRouteResult.Succeeded(mover);
+                return BuildRouteResult.Succeeded(executor);
             }
         }
 
         return BuildRouteResult.Failed("Route not found");
     }
 
-    private IRouteContext GetContext(IContextInfo info)
+    private IRouteContext GetContext(IContextRequest request)
     {
-        IRouteContext context = _contextProvider.GetContext(info);
-
+        IRouteContext context = _contextProvider.GetContext(request);
         if (context is null)
         {
-            if (info.IsRequiredSpecifiedContext)
+            if (request.IsRequiredSpecifiedContext)
             {
                 //TODO: бросить исключение
             }
@@ -82,6 +85,15 @@ internal sealed class Router : IRouter
         }
 
         return context;
+    }
+
+    private ContextRequest BuildContextRequest(string contextKey, bool isRequired)
+    {
+        return new ContextRequest
+        {
+            ContextKey = contextKey,
+            IsRequiredSpecifiedContext = isRequired
+        };
     }
 
     /// <inheritdoc />

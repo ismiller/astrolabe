@@ -1,17 +1,14 @@
 ﻿using System;
 using Astrolabe.Core.Abstractions;
 using Astrolabe.Core.Components.Abstractions;
-using Astrolabe.Core.Routing.Context;
-using Astrolabe.Core.Routing.Context.Abstraction;
 using Astrolabe.Core.Routing.Endpoints.Abstractions;
-using Astrolabe.Core.Routing.Schemes;
 using Astrolabe.Core.Utilities.Security;
 
 namespace Astrolabe.Core.Routing.Endpoints;
 
 internal class EndpointBlank : IEndpointBlank, IBuild<IEndpoint>
 {
-    private readonly string _contextKey;
+    private readonly string _requiredContextKey;
     private IFrameOptions _frameOptions;
     private bool _isRequiredSpecifiedContext;
     private Type _viewType;
@@ -21,13 +18,13 @@ internal class EndpointBlank : IEndpointBlank, IBuild<IEndpoint>
 
     public EndpointBlank(string contextKey)
     {
-        _contextKey = Security.ProtectFrom.NullOrWhiteSpace(contextKey, nameof(contextKey));
+        _requiredContextKey = Security.ProtectFrom.NullOrWhiteSpace(contextKey, nameof(contextKey));
         _isExecuteInRoot = false;
     }
 
     public EndpointBlank(bool isExecuteInRoot)
     {
-        _contextKey = string.Empty;
+        _requiredContextKey = string.Empty;
         _isExecuteInRoot = isExecuteInRoot;
     }
 
@@ -70,14 +67,15 @@ internal class EndpointBlank : IEndpointBlank, IBuild<IEndpoint>
 
     public IEndpoint Build()
     {
-        IContextInfo info = new ContextInfo()
+        IEndpointOptions options = new EndpointOptions()
         {
             IsRequiredSpecifiedContext = _isRequiredSpecifiedContext,
             FrameOptions = _frameOptions,
-            RequiredContextKey = _contextKey,
-            IsRequiredRootFrame = _isExecuteInRoot
+            RequiredContextKey = _requiredContextKey,
+            IsRequiredRootFrame = _isExecuteInRoot,
+            IsRootEndpoint = _isStartedScheme
         };
 
-        return new Endpoint(_viewModelType, _viewType, info, _isStartedScheme);
+        return new Endpoint(_viewModelType, _viewType, options);
     }
 }

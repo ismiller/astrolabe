@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Astrolabe.Core.Routing.Routes.Abstractions;
+﻿namespace Astrolabe.Core.Routing.Routes.Abstractions;
 
 /// <summary>
 /// Определяет функционал управления маршрутами.
@@ -10,9 +8,9 @@ internal interface IRouter
     /// <summary>
     /// Предоставляет маршрут навигации для требуемой модели представления.
     /// </summary>
-    /// <param name="viewModelType"></param>
+    /// <param name="request"></param>
     /// <returns>Объект маршрута - <see cref="IRoute"/>.</returns>
-    IBuildRouteResult GetRequiredRoute(Type viewModelType);
+    IBuildRouteResult GetRequiredRoute(RouteBuildRequest request);
 
     /// <summary>
     /// Выполняет активацию.

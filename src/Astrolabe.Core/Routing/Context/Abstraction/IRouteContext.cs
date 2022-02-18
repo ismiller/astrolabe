@@ -1,5 +1,5 @@
-﻿using System;
-using Astrolabe.Core.ViewModels.Abstractions;
+﻿using Astrolabe.Core.Components.Abstractions;
+using Astrolabe.Core.Routing.Routes.Abstractions;
 
 namespace Astrolabe.Core.Routing.Context.Abstraction;
     
@@ -11,8 +11,8 @@ public interface IRouteContext
     /// <summary>
     /// Пробует выполнить установку типа представления в контекст навигации.
     /// </summary>
-    /// <param name="viewType">Тип представления.</param>
-    /// <param name="container">Модель представления.</param>
+    /// <param name="route">Тип представления.</param>
+    /// <param name="options"></param>
     /// <returns><see langword="true"/> - если установка выполнена успешно.</returns>
-    bool TryExecute(Type viewType, IViewModelContainer container);
+    bool ExecuteRoute(IRoute route, IFrameOptions options);
 }

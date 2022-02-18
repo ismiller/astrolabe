@@ -1,19 +1,18 @@
 ﻿using System.Collections.Generic;
 using Astrolabe.Core.Abstractions;
 using Astrolabe.Core.Routing.Endpoints.Abstractions;
-using Astrolabe.Core.Routing.Schemes;
 using Astrolabe.Core.Utilities.Security;
 
 namespace Astrolabe.Core.Routing.Endpoints;
 
-internal class EndpointBuilder : IEndpointBuilder, IBuild<IEndpointsDictionary<IEndpoint>>
+internal class EndpointBuilder : IEndpointBuilder, IBuild<IEndpointsDictionary>
 {
-    private readonly IEndpointsDictionary<IEndpoint> _schemeDictionary;
+    private readonly IEndpointsDictionary _endpoints;
     private readonly List<IEndpointBlank> _blanks;
 
     public EndpointBuilder()
     {
-        _schemeDictionary = new EndpointsDictionary();
+        _endpoints = new EndpointsDictionary();
         _blanks = new List<IEndpointBlank>();
     }
 
@@ -34,7 +33,7 @@ internal class EndpointBuilder : IEndpointBuilder, IBuild<IEndpointsDictionary<I
         return blank;
     }
 
-    public IEndpointsDictionary<IEndpoint> Build()
+    public IEndpointsDictionary Build()
     {
         foreach (IEndpointBlank blank in _blanks)
         {
@@ -45,9 +44,9 @@ internal class EndpointBuilder : IEndpointBuilder, IBuild<IEndpointsDictionary<I
             }
 
             IEndpoint scheme = blankBuild.Build();
-            _schemeDictionary.RegisterScheme(scheme);
+            _endpoints.RegisterEndpoint(scheme);
         }
 
-        return _schemeDictionary;
+        return _endpoints;
     }
 }
