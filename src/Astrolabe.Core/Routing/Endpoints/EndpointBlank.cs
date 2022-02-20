@@ -72,7 +72,7 @@ internal class EndpointBlank : IEndpointBlank, IBuild<IEndpoint>
             IsRequiredSpecifiedContext = _isRequiredSpecifiedContext,
             FrameOptions = _frameOptions,
             RequiredContextKey = _requiredContextKey,
-            IsRequiredRootFrame = _isExecuteInRoot,
+            IsRequiredRootContext = _isExecuteInRoot,
             IsRootEndpoint = _isStartedScheme
         };
 

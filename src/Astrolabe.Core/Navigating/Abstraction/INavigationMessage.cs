@@ -1,11 +1,8 @@
 ﻿using System;
 
-namespace Astrolabe.Core.ViewModels.Abstractions;
+namespace Astrolabe.Core.Navigating.Abstraction;
 
-/// <summary>
-/// Представляет аргумент навигации.
-/// </summary>
-public interface INavigationArgs
+public interface INavigationMessage
 {
     /// <summary>
     /// Предоставляет делегат, для выполнения принимающей стороной.

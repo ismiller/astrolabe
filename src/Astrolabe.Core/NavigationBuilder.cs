@@ -4,8 +4,6 @@ using Astrolabe.Core.Routing.Context;
 using Astrolabe.Core.Routing.Context.Abstraction;
 using Astrolabe.Core.Routing.Endpoints;
 using Astrolabe.Core.Routing.Endpoints.Abstractions;
-using Astrolabe.Core.Routing.Routes;
-using Astrolabe.Core.Routing.Routes.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Astrolabe.Core;
@@ -65,12 +63,12 @@ public class NavigationBuilder : INavigatorBuilder
 
         using (IServiceScope scope = provider.CreateScope())
         {
-            IRouteContextProvider contextProvider = scope.ServiceProvider.GetRequiredService<IRouteContextProvider>();
+            IContextProvider contextProvider = scope.ServiceProvider.GetRequiredService<IContextProvider>();
 
             var schemeBuilder = _endpointBuilder as IBuild<IEndpointsDictionary>;
             _schemes = schemeBuilder.Build();
             _serviceCollection.AddTransient(s => _schemes);
-            IRouter router = new Router(_schemes, _serviceCollection, contextProvider);
+            IRouter router = new RouteManager(_schemes, _serviceCollection, contextProvider);
             _serviceCollection.AddTransient(s => router);
             _serviceCollection.AddTransient<IAstrolabe, AstrolabeNavigator>();
         }
@@ -93,10 +91,10 @@ public class NavigationBuilder : INavigatorBuilder
         }
     }
 
-    public INavigatorBuilder TargetContextProvider<T>() where T : class, IRouteContextProvider
+    public INavigatorBuilder TargetContextProvider<T>() where T : class, IContextProvider
     {
         _serviceCollection.AddTransient<IRouteContextResolver, RouteContextResolver>();
-        _serviceCollection.AddTransient<IRouteContextProvider, T>();
+        _serviceCollection.AddTransient<IContextProvider, T>();
 
         return this;
     }

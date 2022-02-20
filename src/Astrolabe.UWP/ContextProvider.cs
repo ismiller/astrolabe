@@ -8,11 +8,11 @@ using Astrolabe.UWP.Extensions;
 
 namespace Astrolabe.UWP;
 
-public class RouteContextProvider : IRouteContextProvider
+public class ContextProvider : IContextProvider
 {
     private readonly IRouteContextResolver _resolver;
 
-    public RouteContextProvider(IRouteContextResolver resolver)
+    public ContextProvider(IRouteContextResolver resolver)
     {
         _resolver = resolver;
     }
@@ -41,5 +41,10 @@ public class RouteContextProvider : IRouteContextProvider
         }
 
         return _resolver.Resolve(frame);
+    }
+
+    public IRouteContext GetRootContext()
+    {
+        throw new NotImplementedException();
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace Astrolabe.Core.ViewModels.Abstractions;
+﻿using Astrolabe.Core.Navigating.Abstraction;
+
+namespace Astrolabe.Core.ViewModels.Abstractions;
 
 /// <summary>
 /// Определяет функционал навигируемого объекта.

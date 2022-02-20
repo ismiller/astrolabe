@@ -9,7 +9,7 @@ public interface INavigatorBuilder
 {
     public IStartUp Build();
 
-    public INavigatorBuilder TargetContextProvider<T>() where T : class, IRouteContextProvider;
+    public INavigatorBuilder TargetContextProvider<T>() where T : class, IContextProvider;
 
     public INavigatorBuilder UseConfigure<T>() where T : class, IConfigurable;
 

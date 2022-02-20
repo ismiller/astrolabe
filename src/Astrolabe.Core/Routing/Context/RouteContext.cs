@@ -1,7 +1,7 @@
 ﻿using System;
 using Astrolabe.Core.Components.Abstractions;
 using Astrolabe.Core.Routing.Context.Abstraction;
-using Astrolabe.Core.Routing.Routes.Abstractions;
+using Astrolabe.Core.Routing.Endpoints.Abstractions;
 using Astrolabe.Core.Utilities.Security;
 
 namespace Astrolabe.Core.Routing.Context;
@@ -34,9 +34,9 @@ internal sealed class RouteContext : IRouteContext
     #region Public Methods
 
     /// <inheritdoc />
-    public bool ExecuteRoute(IRoute route, IFrameOptions options)
+    public bool MoveToEndpoint(IEndpointExecuteRequest request)
     {
-        return _frame.ExecuteNavigation(route.ViewType, route.ViewModelContainer, options);
+        return _frame.ExecuteNavigation(request.DestinationEndpoint.ViewType, request.ViewModelContainer, request.Options);
     }
 
     #endregion Public Methods

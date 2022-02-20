@@ -5,4 +5,6 @@ public interface IContextRequest
     string ContextKey { get; }
 
     bool IsRequiredSpecifiedContext { get; }
+
+    bool IsRequiredRootContext { get; }
 }

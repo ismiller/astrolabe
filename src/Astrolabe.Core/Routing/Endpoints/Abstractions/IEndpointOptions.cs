@@ -28,5 +28,5 @@ public interface IEndpointOptions
     /// Предоставляет или устанавливает флаг, указывающий, что маршрут, связанный с этим контекстом,
     /// должен будет выполниться в корневом фрейме окна.
     /// </summary>
-    public bool IsRequiredRootFrame { get; set; }
+    public bool IsRequiredRootContext { get; set; }
 }

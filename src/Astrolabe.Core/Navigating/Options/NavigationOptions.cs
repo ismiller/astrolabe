@@ -12,7 +12,4 @@ public struct NavigationOptions : INavigationOptions
 
     /// <inheritdoc />
     public bool IsResetStack { get; set; }
-
-    /// <inheritdoc />
-    public bool IsIgnoreStack { get; set; }
 }

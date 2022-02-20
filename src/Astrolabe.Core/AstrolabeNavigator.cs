@@ -1,10 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
 using Astrolabe.Core.Abstractions;
+using Astrolabe.Core.Extensions;
 using Astrolabe.Core.Navigating;
 using Astrolabe.Core.Navigating.Abstraction;
-using Astrolabe.Core.Routing.Routes;
-using Astrolabe.Core.Routing.Routes.Abstractions;
+using Astrolabe.Core.Navigating.Options;
+using Astrolabe.Core.Routing;
+using Astrolabe.Core.Routing.Context;
+using Astrolabe.Core.Routing.Context.Abstraction;
+using Astrolabe.Core.Routing.Endpoints;
+using Astrolabe.Core.Routing.Endpoints.Abstractions;
 using Astrolabe.Core.Utilities.Security;
+using Astrolabe.Core.ViewModels;
 using Astrolabe.Core.ViewModels.Abstractions;
 
 namespace Astrolabe.Core;
@@ -16,8 +23,10 @@ internal sealed class AstrolabeNavigator : IAstrolabe
 {
     #region Private Fields
 
-    private readonly INavigationStack<INavigationExecutor> _navigationStack;
-    private readonly IRouter _router;
+    private readonly IEndpointManager _endpointManager;
+    private readonly IContextProvider _contextProvider;
+
+    private readonly Dictionary<string, INavigationStack<HistoryItem>> _contextHistories;
 
     #endregion Private Fields
 
@@ -34,10 +43,11 @@ internal sealed class AstrolabeNavigator : IAstrolabe
     /// Создает экземпляр <see cref="AstrolabeNavigator"/>.
     /// </summary>
     /// <param name="router">Маршрутизатор.</param>
-    public AstrolabeNavigator(IRouter router)
+    public AstrolabeNavigator(IEndpointManager endpointManager, IContextProvider contextProvider)
     {
-        _router = Security.ProtectFrom.Null(router, nameof(router));
-        _navigationStack = new NavigationStack<INavigationExecutor>();
+        _endpointManager = Security.ProtectFrom.Null(endpointManager, nameof(endpointManager));
+        _contextProvider = Security.ProtectFrom.Null(contextProvider, nameof(contextProvider));
+        _contextHistories = new Dictionary<string, INavigationStack<HistoryItem>>(3);
     }
 
     #endregion Public Constructors
@@ -45,105 +55,149 @@ internal sealed class AstrolabeNavigator : IAstrolabe
     #region Public Methods
 
     /// <inheritdoc />
-    public void NavigateBack(INavigationArgs navigationArgs, INavigationOptions options)
+    public void NavigateTo(Type viewModelType, INavigationMessage message)
     {
-        if (_navigationStack.Any())
+        INavigationOptions defaultOptions = new NavigationOptions()
         {
-            _ = _navigationStack.TryGetSuspend(out INavigationExecutor lastRouteMover);
+            IsClearStack = false,
+            IsResetStack = false
+        };
 
-            if (_navigationStack.TryPop(out INavigationExecutor mover))
-            {
-                IRoutingResult result = mover.Execute();
-
-                if (result.IsSuccess)
-                {
-                    result.ApplyNavigateArgs(navigationArgs);
-
-                    ApplyNavigateOptions(mover, options);
-
-                    Navigated?.Invoke(this, EventArgs.Empty);
-                }
-            }
-        }
-    }
-
-    /// <inheritdoc />
-    public void NavigateBack(INavigationArgs navigationArgs)
-    {
-        if (_navigationStack.Any())
-        {
-            if (_navigationStack.TryPop(out INavigationExecutor mover))
-            {
-                IRoutingResult result = mover.Execute();
-
-                if (result.IsSuccess)
-                {
-                    result.ApplyNavigateArgs(navigationArgs);
-                    Navigated?.Invoke(this, EventArgs.Empty);
-                }
-            }
-        }
-    }
-
-    /// <inheritdoc />
-    public void NavigateTo(Type viewModelType, INavigationArgs navigationArgs, INavigationOptions options)
-    {
-        var request = new RouteBuildRequest(viewModelType, navigationArgs);
-        IBuildRouteResult buildRoute = _router.GetRequiredRoute(request);
-
-        if (buildRoute.IsSuccess)
-        {
-            IRoutingResult routingResult = buildRoute.Mover.Execute();
-            if (routingResult.IsSuccess)
-            {
-                routingResult.ApplyNavigateArgs(navigationArgs);
-                ApplyNavigateOptions(buildRoute.Mover, options);
-                Navigated?.Invoke(this, EventArgs.Empty);
-            }
-        }
-    }
-
-    /// <inheritdoc />
-    public void NavigateTo(Type viewModelType, INavigationArgs navigationArgs)
-    {
-        var request = new RouteBuildRequest(viewModelType, navigationArgs);
-
-        IBuildRouteResult buildRoute = _router.GetRequiredRoute(request);
-        if (buildRoute.IsSuccess)
-        {
-            IRoutingResult routingResult = buildRoute.Mover.Execute();
-            if (routingResult.IsSuccess)
-            {
-                _navigationStack.Push(buildRoute.Mover);
-                routingResult.ApplyNavigateArgs(navigationArgs);
-                Navigated?.Invoke(this, EventArgs.Empty);
-            }
-        }
+        NavigateTo(viewModelType, message, defaultOptions);
     }
 
     #endregion Public Methods
 
     #region Private Methods
 
-    private void ApplyNavigateOptions(INavigationExecutor currentNavigationExecutor, INavigationOptions options)
+    /// <inheritdoc />
+    public void NavigateTo(Type viewModelType, INavigationMessage message, INavigationOptions options)
     {
-        if (options is not null)
+        IEndpointRequest endpointRequest = new EndpointRequest(viewModelType);
+        IEndpoint requiredEndpoint = _endpointManager.GetEndpoint(endpointRequest);
+
+        IContextRequest contextRequest = BuildContextRequest(requiredEndpoint.Options);
+        IRouteContext context = _contextProvider.GetContext(contextRequest);
+
+        object viewModel = ServiceLocator.GetRequiredService(viewModelType);
+
+        if (viewModel is INavigatable navigatable)
         {
-            if (!options.IsIgnoreStack)
-            {
-                _navigationStack.Push(currentNavigationExecutor);
-            }
+            IEndpointExecuteRequest executeRequest = BuildEndpointExecuteRequest(requiredEndpoint, navigatable);
+            bool isSuccessMove = context.MoveToEndpoint(executeRequest);
 
-            if (options.IsResetStack)
+            if (isSuccessMove)
             {
-                _navigationStack.Reset();
-            }
+                INavigationStack<HistoryItem> stack = GetHistoryStack(requiredEndpoint);
 
-            if (options.IsClearStack)
-            {
-                _navigationStack.Clear();
+                Action<INavigationMessage, INavigationOptions> callBack =
+                    BuildReverseBackNavigateAction(requiredEndpoint.Options.RequiredContextKey, viewModelType);
+
+                HistoryItem item = new()
+                {
+                    Endpoint = requiredEndpoint,
+                    NavigationCallback = callBack
+                };
+
+                stack.Push(item);
+                stack.ApplyNavigationStackOptions(options);
+
+                INavigationArgs args;
+                if (stack.Any())
+                {
+                    args = new NavigationArgs(message, callBack);
+                }
+                else
+                {
+                    args = new NavigationArgs(message);
+                }
+
+                navigatable.Prepare(args);
+                Navigated?.Invoke(this, EventArgs.Empty);
             }
         }
+    }
+
+    private Action<INavigationMessage, INavigationOptions> BuildReverseBackNavigateAction(string contextKey, Type viewModelType)
+    {
+        return (message, options) =>
+        {
+            _contextHistories.TryGetValue(contextKey, out INavigationStack<HistoryItem> stack);
+            if (stack.Any())
+            {
+                _ = stack.TryGetSuspend(out HistoryItem _);
+
+                if (stack.TryPop(out HistoryItem item))
+                {
+                    IContextRequest contextRequest = BuildContextRequest(item.Endpoint.Options);
+                    IRouteContext context = _contextProvider.GetContext(contextRequest);
+
+                    object viewModel = ServiceLocator.GetRequiredService(viewModelType);
+
+                    if (viewModel is INavigatable navigatable)
+                    {
+                        IEndpointExecuteRequest executeRequest = BuildEndpointExecuteRequest(item.Endpoint, navigatable);
+                        bool isSuccessMove = context.MoveToEndpoint(executeRequest);
+
+                        if (isSuccessMove)
+                        {
+                            stack.ApplyNavigationStackOptions(options);
+
+                            INavigationArgs args;
+                            if (stack.Any())
+                            {
+                                args = new NavigationArgs(message, item.NavigationCallback);
+                            }
+                            else
+                            {
+                                args = new NavigationArgs(message);
+                            }
+
+                            navigatable.Prepare(args);
+                            Navigated?.Invoke(this, EventArgs.Empty);
+                        }
+                    }
+                }
+            }
+        };
+    }
+
+    private IContextRequest BuildContextRequest(IEndpointOptions options)
+    {
+        return new ContextRequest
+        {
+            ContextKey = options.RequiredContextKey,
+            IsRequiredSpecifiedContext = options.IsRequiredSpecifiedContext,
+            IsRequiredRootContext = options.IsRequiredRootContext
+        };
+    }
+
+    private IEndpointExecuteRequest BuildEndpointExecuteRequest(IEndpoint endpoint, INavigatable viewModelInstance)
+    {
+        return new EndpointExecutorRequest
+        {
+            DestinationEndpoint = endpoint,
+            Options = endpoint.Options.FrameOptions,
+            ViewModelContainer = new ViewModelContainer(viewModelInstance)
+        };
+    }
+
+    private INavigationStack<HistoryItem> GetHistoryStack(IEndpoint endpoint)
+    {
+        _contextHistories.TryGetValue(endpoint.Options.RequiredContextKey, out INavigationStack<HistoryItem> stack);
+        if (stack is null)
+        {
+            stack = AddContextInHistory(endpoint);
+        }
+
+        return stack;
+    }
+
+    private INavigationStack<HistoryItem> AddContextInHistory(IEndpoint endpoint)
+    {
+        INavigationStack<HistoryItem> stack = new NavigationStack<HistoryItem>();
+        _contextHistories.Add(endpoint.Options.RequiredContextKey, stack);
+        return stack;
     }
 
     #endregion Private Methods

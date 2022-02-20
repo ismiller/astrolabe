@@ -1,5 +1,6 @@
 ﻿using System.Windows.Input;
 using Astrolabe.Core.Abstractions;
+using Astrolabe.Core.Navigating.Abstraction;
 using Astrolabe.Core.ViewModels.Abstractions;
 using Microsoft.Toolkit.Mvvm.Input;
 
@@ -9,6 +10,7 @@ namespace Test
     {
         public ICommand NextCommand { get; }
         private readonly IAstrolabe _navigator;
+
         public TestPageViewModel(IAstrolabe navigator)
         {
             _navigator = navigator;
@@ -17,12 +19,10 @@ namespace Test
 
         public void Prepare(INavigationArgs args)
         {
-            
         }
 
         public void SetObserver(IViewObserver observer)
         {
-
         }
     }
 }

@@ -3,7 +3,7 @@
 /// <summary>
 /// Определяет методы предоставления контекста выполнения маршрута.
 /// </summary>
-public interface IRouteContextProvider
+public interface IContextProvider
 {
     /// <summary>
     /// Предоставляет контекст выполнения маршрута.

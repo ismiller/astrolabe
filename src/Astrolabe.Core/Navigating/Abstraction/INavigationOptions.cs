@@ -14,9 +14,4 @@ public interface INavigationOptions
     /// Предоставляет или устанавливает флаг, указывающий на необходимость сброса стека после навигации.
     /// </summary>
     bool IsResetStack { get; set; }
-
-    /// <summary>
-    /// Предоставляет или устанавливает флаг, указывающий на необходимость игнорирования текущей навигации.
-    /// </summary>
-    bool IsIgnoreStack { get; set; }
 }

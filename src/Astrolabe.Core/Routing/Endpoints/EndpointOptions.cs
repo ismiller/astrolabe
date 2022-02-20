@@ -9,5 +9,5 @@ public class EndpointOptions : IEndpointOptions
     public string RequiredContextKey { get; set; }
     public IFrameOptions FrameOptions { get; set; }
     public bool IsRequiredSpecifiedContext { get; set; }
-    public bool IsRequiredRootFrame { get; set; }
+    public bool IsRequiredRootContext { get; set; }
 }
